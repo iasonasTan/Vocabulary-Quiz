@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.control.*?>
+
+<VBox
+    spacing="10"
+    fx:controller="org.vocab.controller.QuizController"
+    alignment="CENTER"
+    fillWidth="false"
+    xmlns:fx="http://javafx.com/fxml">
+
+    <Label
+        styleClass="title"
+        text="Vocabulary Helper"/>
+
+    <Label
+        styleClass="label"
+        fx:id="questionLabel"/>
+
+    <HBox
+        spacing="10"
+        alignment="CENTER">
+
+        <Button
+            text="NULL"
+            styleClass="choice"
+            onAction="#choice0action"
+            fx:id="choice1"/>
+        
+        <Button
+            text="NULL"
+            styleClass="choice"
+            onAction="#choice1action"
+            fx:id="choice2"/>
+
+        <Button
+            text="NULL"
+            styleClass="choice"
+            onAction="#choice2action"
+            fx:id="choice3"/>
+    </HBox>
+
+    <Button
+        styleClass="button"
+        text="Quit"
+        onAction="#quit"/>
+
+</VBox>

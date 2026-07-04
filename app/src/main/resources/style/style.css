@@ -1,0 +1,23 @@
+.title {
+    -fx-font-weight: bold;
+}
+
+.button {
+
+}
+
+.input {
+
+}
+
+.label {
+
+}
+
+.choice {
+    
+}
+
+* {
+    -fx-font-size: larger;
+}

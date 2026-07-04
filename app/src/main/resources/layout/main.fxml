@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.*?>
+
+<VBox
+    spacing="10"
+    fx:controller="org.vocab.controller.MainController"
+    alignment="CENTER"
+    fillWidth="false"
+    xmlns:fx="http://javafx.com/fxml">
+
+    <Label
+        styleClass="title"
+        text="Vocabulary Helper"/>
+
+    <TextField
+        styleClass="input"
+        promptText="Enter [word=word_translation]"
+        fx:id="wordPairInput"/>
+
+    <Button
+        styleClass="button"
+        text="Add word"
+        onAction="#addWord"/>
+
+    <Button
+        styleClass="button"
+        text="Start Quiz"
+        onAction="#startQuiz"/>
+
+</VBox>
