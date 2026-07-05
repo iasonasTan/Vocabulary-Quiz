@@ -47,9 +47,18 @@
         </VBox>
     </HBox>
 
-    <Button
-        styleClass="button"
-        text="Start Quiz"
-        onAction="#startQuiz"/>
+    <HBox
+        spacing="10">
+
+        <Button
+            styleClass="button"
+            text="Start Quiz"
+            onAction="#startQuiz"/>
+
+        <Button
+            styleClass="button"
+            text="Quit App"
+            onAction="#quit"/>
+    </HBox>
 
 </VBox>

@@ -51,23 +51,26 @@ public final class QuizController extends VBox {
 
     @FXML
     public void choice0action() {
-        if(pair != null && pair.isAnswer0()) { nextQuestion(); }
+        if(pair != null && pair.isAnswer0())
+            nextQuestion();
     }
 
     @FXML
     public void choice1action() {
-        if(pair != null && pair.isAnswer1()) { nextQuestion(); }
+        if(pair != null && pair.isAnswer1())
+            nextQuestion();
     }
 
     @FXML
     public void choice2action() {
-        if(pair != null && pair.isAnswer2()) { nextQuestion(); }
+        if(pair != null && pair.isAnswer2())
+            nextQuestion();
     }
 
     @FXML
-    public void quit() {
+    public void back() {
         Message message = Message.newBuilder()
-            .setAction("abort_app")
+            .setAction("main")
             .build();
         context.broadcastMessage(message);
     }

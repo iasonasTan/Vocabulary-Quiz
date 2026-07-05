@@ -60,19 +60,25 @@ public class App extends Application implements Context {
         @Override
         public void onReceive(Message message) {
             if(message.getAction().equals("start_quiz")) {
-                // Show quiz field
-                setScene("quiz");
-
-                // Send vocabulary to main
-                Message message1 = Message.newBuilder()
-                    .setAction("initialize_vocabulary")
-                    .putExtra("vocabulary", message.getBundle().getString("vocabulary"))
-                    .build();
-                broadcastMessage(message1);
+                startQuiz(message.getBundle().getString("vocabulary"));
             } else if (message.getAction().equals("abort_app")) {
                 mStage.close();
                 System.exit(0);
+            } else if (message.getAction().equals("main")) {
+                setScene("main");
             }
+        }
+
+        private void startQuiz(String vocab) {
+            // Show quiz field
+            setScene("quiz");
+
+            // Send vocabulary to main
+            Message message1 = Message.newBuilder()
+                .setAction("initialize_vocabulary")
+                .putExtra("vocabulary", vocab)
+                .build();
+            broadcastMessage(message1);
         }
     }
 }

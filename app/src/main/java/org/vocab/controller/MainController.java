@@ -56,4 +56,12 @@ public class MainController extends VBox {
             System.out.println("[WARNING] Pair couldn't be added.");
         }
     }
+
+    @FXML
+    public void quit() {
+        Message message = Message.newBuilder()
+            .setAction("abort_app")
+            .build();
+        context.broadcastMessage(message);
+    }
 }

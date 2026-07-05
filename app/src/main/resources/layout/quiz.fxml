@@ -44,7 +44,7 @@
 
     <Button
         styleClass="button"
-        text="Quit"
-        onAction="#quit"/>
+        text="Back"
+        onAction="#back"/>
 
 </VBox>
