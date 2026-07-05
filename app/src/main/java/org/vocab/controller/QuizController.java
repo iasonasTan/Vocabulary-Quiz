@@ -10,18 +10,14 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 
+import java.util.Optional;
+
 public final class QuizController extends VBox {
     @FXML
     public Label questionLabel;
 
     @FXML
-    public Button choice1;
-    
-    @FXML
-    public Button choice2;
-
-    @FXML
-    public Button choice3;
+    public Button choice1, choice2, choice3;
 
     private Vocabulary.DataPair pair;
     private Vocabulary vocabulary;
@@ -34,23 +30,17 @@ public final class QuizController extends VBox {
 
     @FXML
     public void choice0action() {
-        if(pair.isAnswer0()) {
-            nextQuestion();
-        }
+        if(pair != null && pair.isAnswer0()) { nextQuestion(); }
     }
 
     @FXML
     public void choice1action() {
-        if(pair.isAnswer1()) {
-            nextQuestion();
-        }
+        if(pair != null && pair.isAnswer1()) { nextQuestion(); }
     }
 
     @FXML
     public void choice2action() {
-        if(pair.isAnswer2()) {
-            nextQuestion();
-        }
+        if(pair != null && pair.isAnswer2()) { nextQuestion(); }
     }
 
     @FXML
@@ -62,23 +52,23 @@ public final class QuizController extends VBox {
     }
 
     private void nextQuestion() {
-        pair = vocabulary.getRandom();
-        questionLabel.setText(pair.question());
-        choice1.setText(pair.answers()[0]);
-        choice2.setText(pair.answers()[1]);
-        choice3.setText(pair.answers()[2]);
+        Optional<Vocabulary.DataPair> pairOpt = vocabulary.getRandom();
+        pairOpt.ifPresent(pair -> {
+            this.pair = pair;
+            questionLabel.setText(pair.question());
+            choice1.setText(pair.answers()[0]);
+            choice2.setText(pair.answers()[1]);
+            choice3.setText(pair.answers()[2]);
+        });
     }
 
     private final class VocabularyInitializer implements MessageReceiver {
         @Override
         public void onReceive(Message message) {
-            if(!message.getAction().equals("initialize_vocabulary")) {
-                return;
+            if(message.getAction().equals("initialize_vocabulary")) {
+                vocabulary = new Vocabulary(message.getBundle().getString("vocabulary"));
+                nextQuestion();
             }
-
-            vocabulary = new Vocabulary(message.getBundle().getString("vocabulary"));
-
-            nextQuestion();
         }
     }
 }

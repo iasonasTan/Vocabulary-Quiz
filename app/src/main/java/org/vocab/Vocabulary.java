@@ -7,6 +7,7 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.Set;
+import java.util.Optional;
 
 public final class Vocabulary {
     private Map<String, String> mData = new HashMap<>();
@@ -15,10 +16,13 @@ public final class Vocabulary {
     }
 
     public Vocabulary(String data) {
-        String[] pairs = data.split(",");
+        String[] pairs = data.split(","); // Get pairs
         for(String pair: pairs) {
-            String[] pairSplit = pair.split("=");
-            mData.put(pairSplit[0], pairSplit[1]);
+            if(!pair.contains("=")) {
+                continue;
+            }
+            String[] pairSplit = pair.split("="); // Seperate each pair
+            mData.put(pairSplit[0], pairSplit[1]); // Put each pair in the map
         }
     }
 
@@ -36,7 +40,11 @@ public final class Vocabulary {
      * the correct answers, 
      * and a list with three answers (one of them is right).
      */
-    public DataPair getRandom() {
+    public Optional<DataPair> getRandom() {
+        if(mData.values().isEmpty()) {
+            return Optional.empty();
+        }
+
         // Get a random key
         Set<String> keysSet = mData.keySet();
         String[] keys = (String[])keysSet.toArray(new String[keysSet.size()]);
@@ -60,43 +68,48 @@ public final class Vocabulary {
         Collections.shuffle(randomValues);
 
         // Return values packed in a DataPair record.
-        return new DataPair(key, (String[])randomValues.toArray(new String[randomValues.size()]), value1);
+        return Optional.of(
+            new DataPair(key, (String[])randomValues.toArray(new String[randomValues.size()]), value1)
+        );
     }
 
     @Override
     public String toString() {
         final StringBuilder builder = new StringBuilder();
-        mData.forEach((key, value) -> {
-            builder.append(key+"="+value)
-                .append(',');
-        });
+        // Append a pair and then a comma
+        mData.forEach((key, value) -> builder.append(key+"="+value).append(','));
+        // Remove the last comma
         builder.setLength(Math.max(builder.length() - 1, 0));
         return builder.toString();
     }
 
+    /**
+     * Holds question and answers.
+     */
     public record DataPair(String question, String[] answers, String correctAnswer) {
-        public String getAnswer0() {
-            return answers[0];
-        }
 
-        public String getAnswer1() {
-            return answers[1];
-        }
-
-        public String getAnswer2() {
-            return answers[2];
+        /**
+         * Checks if given data are non-null and valid.
+         */
+        public DataPair {
+            if(question == null && correctAnswer == null || answers == null) {
+                throw new NullPointerException("No value can be null.");
+            }
+            if(answers.length != 3) {
+                throw new RuntimeException("Length of array 'answers' must be 3.");
+            }
         }
 
         public boolean isAnswer0() {
-            return getAnswer0().equals(correctAnswer);
+            return answers[0].equals(correctAnswer);
         }
 
         public boolean isAnswer1() {
-            return getAnswer1().equals(correctAnswer);
+            return answers[1].equals(correctAnswer);
         }
 
         public boolean isAnswer2() {
-            return getAnswer2().equals(correctAnswer);
+            return answers[2].equals(correctAnswer);
         }
     }
 }

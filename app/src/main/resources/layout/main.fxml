@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.control.*?>
 
 <VBox
-    spacing="10"
+    spacing="20"
     fx:controller="org.vocab.controller.MainController"
     alignment="CENTER"
     fillWidth="false"
@@ -13,15 +14,38 @@
         styleClass="title"
         text="Vocabulary Helper"/>
 
-    <TextField
-        styleClass="input"
-        promptText="Enter [word=word_translation]"
-        fx:id="wordPairInput"/>
+    <HBox
+        alignment="CENTER"
+        spacing="10">
+        
+        <VBox
+            styleClass="subdiv"
+            spacing="10">
 
-    <Button
-        styleClass="button"
-        text="Add word"
-        onAction="#addWord"/>
+            <TextField
+                styleClass="input"
+                promptText="Enter [word=word_translation]"
+                fx:id="wordPairInput"/>
+
+            <Button
+                styleClass="button"
+                text="Add word"
+                onAction="#addWord"/>
+        </VBox>
+
+        <Label
+            text="OR"/>
+
+        <VBox
+            styleClass="subdiv"
+            spacing="10">
+
+            <TextField
+                styleClass="input"
+                promptText="File path"
+                fx:id="filePathInput"/>
+        </VBox>
+    </HBox>
 
     <Button
         styleClass="button"
