@@ -6,6 +6,9 @@ import com.fxcontext.receiver.MessageReceiver;
 
 import org.vocab.Vocabulary;
 
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
@@ -26,6 +29,24 @@ public final class QuizController extends VBox {
     public QuizController(Context context) {
         this.context = context;
         this.context.registerReceiver(new VocabularyInitializer());
+    }
+
+    @FXML
+    public void handleKeyPress(KeyEvent ke) {
+        switch(ke.getCode()) {
+            case KeyCode.DIGIT1:
+            case KeyCode.NUMPAD1:
+                choice0action();
+                break;
+            case KeyCode.DIGIT2:
+            case KeyCode.NUMPAD2:
+                choice1action();
+                break;
+            case KeyCode.DIGIT3:
+            case KeyCode.NUMPAD3:
+                choice2action();
+                break;
+        }
     }
 
     @FXML
@@ -56,9 +77,9 @@ public final class QuizController extends VBox {
         pairOpt.ifPresent(pair -> {
             this.pair = pair;
             questionLabel.setText(pair.question());
-            choice1.setText(pair.answers()[0]);
-            choice2.setText(pair.answers()[1]);
-            choice3.setText(pair.answers()[2]);
+            choice1.setText(pair.answers()[0] + "[1]");
+            choice2.setText(pair.answers()[1] + "[2]");
+            choice3.setText(pair.answers()[2] + "[3]");
         });
     }
 

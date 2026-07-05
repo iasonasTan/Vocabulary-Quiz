@@ -6,6 +6,7 @@
 <VBox
     spacing="10"
     fx:controller="org.vocab.controller.QuizController"
+    onKeyPressed="#handleKeyPress"
     alignment="CENTER"
     fillWidth="false"
     xmlns:fx="http://javafx.com/fxml">
