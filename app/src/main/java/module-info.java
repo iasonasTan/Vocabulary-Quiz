@@ -1,5 +1,4 @@
 module App {
-    requires java.desktop;
     requires javafx.fxml;
     requires JavaFXContext;
     requires javafx.graphics;
