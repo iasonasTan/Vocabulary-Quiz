@@ -13,8 +13,6 @@ javafx {
 }
 
 dependencies {
-    testImplementation libs.junit
-    implementation libs.guava
     implementation files('../libs/JFXWContextLib.jar')
 }
 
@@ -26,4 +24,11 @@ java {
 
 application {
     mainClass = 'org.vocab.App'
+    mainModule = 'App'
+}
+
+jar {
+    manifest {
+        attributes 'Main-Class': 'org.vocab.App'
+    }
 }
