@@ -8,7 +8,6 @@ import org.vocab.Vocabulary;
 
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
@@ -22,7 +21,7 @@ public final class QuizController extends VBox {
     @FXML
     public Button choice1, choice2, choice3;
 
-    private Vocabulary.DataPair pair;
+    private Vocabulary.PairAndAnswers pair;
     private Vocabulary vocabulary;
     private final Context context;
 
@@ -76,10 +75,10 @@ public final class QuizController extends VBox {
     }
 
     private void nextQuestion() {
-        Optional<Vocabulary.DataPair> pairOpt = vocabulary.getRandom();
+        Optional<Vocabulary.PairAndAnswers> pairOpt = vocabulary.randomPairAndAnswers();
         pairOpt.ifPresent(pair -> {
             this.pair = pair;
-            questionLabel.setText(pair.question());
+            questionLabel.setText(pair.getQuestion());
             choice1.setText(pair.answers()[0] + "[1]");
             choice2.setText(pair.answers()[1] + "[2]");
             choice3.setText(pair.answers()[2] + "[3]");
