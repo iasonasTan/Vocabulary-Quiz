@@ -5,7 +5,7 @@ echo Generating runtime...
 
 "%JAVA_HOME%\bin\jlink" ^
   --module-path "%JAVA_HOME%\jmods" ^
-  --add-modules java.base,java.desktop,java.scripting,java.xml ^
+  --add-modules java.base,java.desktop,java.scripting,java.xml,jdk.unsupported ^
   --strip-debug ^
   --no-man-pages ^
   --no-header-files ^
