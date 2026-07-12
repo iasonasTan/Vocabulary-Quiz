@@ -13,7 +13,7 @@ public final class VersionChecker {
     /**
      * The location of the latest version file (GitHub repo of the application).
      */
-    private static final String VERSION_URL = "https://github.com/iasonasTan/Vocabulary-Quiz/tree/master/app/src/main/resources/app_version.txt";
+    private static final String VERSION_URL = "https://raw.githubusercontent.com/iasonasTan/Vocabulary-Quiz/master/app/src/main/resources/app_version.txt";
 
     /**
      * Checks if the application is up-to-date.
