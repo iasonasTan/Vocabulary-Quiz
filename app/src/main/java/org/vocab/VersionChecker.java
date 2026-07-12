@@ -61,10 +61,11 @@ public final class VersionChecker {
      * @throws IOException If any IOException occurs with reading the file or the input stream or if any NFE occurs.
      */
     private int readVersionFromStream(InputStream inputStream) throws IOException {
+        if(inputStream == null) {
+            throw new IOException("Could not read version from given InputStream (inputStream is null).");
+        }
         try (InputStreamReader inputStreamReader = new InputStreamReader(inputStream)) {
-            String version = inputStreamReader.readAllAsString()
-                    .replace(" ", "")
-                    .replace("\n", "");
+            String version = inputStreamReader.readAllAsString().strip();
             return Integer.parseInt(version);
         } catch (NumberFormatException nfe) {
             throw new IOException("Could not read version from given InputStream (NumberFormatException).");
