@@ -25,6 +25,9 @@ java {
 application {
     mainClass = 'org.vocab.App'
     mainModule = 'App'
+    applicationDefaultJvmArgs = [
+        "--enable-native-access=javafx.graphics"
+    ]
 }
 
 jar {
