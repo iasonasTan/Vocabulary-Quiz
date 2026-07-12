@@ -3,6 +3,7 @@ module App {
     requires JavaFXContext;
     requires javafx.graphics;
     requires javafx.controls;
+    requires java.desktop;
 
     exports org.vocab;
     exports org.vocab.controller;
