@@ -38,12 +38,19 @@
 
         <VBox
             styleClass="subdiv"
-            spacing="10">
+            spacing="10"
+            alignment="CENTER_RIGHT">
 
             <TextField
                 styleClass="input"
                 promptText="File path"
                 fx:id="filePathInput"/>
+
+            <!--Loads word pairs from file to the current vocabulary-->
+            <Button
+                styleClass="button"
+                text="Load from file"
+                onAction="#loadFromFile"/>
         </VBox>
     </HBox>
 

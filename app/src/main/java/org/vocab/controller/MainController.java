@@ -30,20 +30,26 @@ public class MainController extends VBox {
 
     @FXML
     public void startQuiz() {
-        String path = filePathInput.getText();
-        try(InputStream inputStream = new FileInputStream(path);
-            InputStreamReader reader = new InputStreamReader(inputStream, StandardCharsets.UTF_8)) {
-            VocabFileLoader vfl = new VocabFileLoader(vocabulary);
-            vfl.loadVocab(reader);
-        } catch (IOException ioe) {
-            // ignore
-        }
-
         Message message = Message.newBuilder()
             .setAction("start_quiz")
             .putExtra("vocabulary", vocabulary.toString())
             .build();
         context.broadcastMessage(message);
+    }
+
+    // Separated the file-loading part of startQuiz() into its own method,
+    // so the user can load files without starting the quiz.
+    @FXML
+    public void loadFromFile(){
+        String path = filePathInput.getText();
+        try(InputStream inputStream = new FileInputStream(path);
+            InputStreamReader reader = new InputStreamReader(inputStream, StandardCharsets.UTF_8)) {
+            VocabFileLoader vfl = new VocabFileLoader(vocabulary);
+            vfl.loadVocab(reader);
+            filePathInput.setText("");
+        }catch (IOException ioe){
+            System.out.println("[WARNING] File couldn't be loaded.");
+        }
     }
 
     @FXML
