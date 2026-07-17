@@ -46,13 +46,12 @@ public class App extends Application implements Context {
         }
         mStage.show();
 
-        checkForUpdates(mStage);
+        checkForUpdates();
     }
 
-    private void checkForUpdates(final Stage parentStage) {
+    private void checkForUpdates() {
         final String RELEASES_URL = "https://github.com/iasonasTan/Vocabulary-Quiz/releases/latest";
-
-        VersionChecker versionChecker = new VersionChecker();
+        final VersionChecker versionChecker = new VersionChecker();
         if(!versionChecker.isUpToDate()) {
             MessageWindow messageWindow = new MessageWindow(
                     "An update is available!",

@@ -8,9 +8,9 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-public final class MessageWindow extends Stage {
-    private final VBox mMainLayout = new VBox();
-    private final HBox mButtonsLayout = new HBox();
+public class MessageWindow extends Stage {
+    private final VBox mMainLayout = new VBox(10);
+    private final HBox mButtonsLayout = new HBox(10);
 
     public MessageWindow(String title, Stage parent, String message, String description) {
         addText(message, description);
@@ -18,7 +18,7 @@ public final class MessageWindow extends Stage {
         setAlwaysOnTop(true);
         setTitle(title);
         mMainLayout.setAlignment(Pos.CENTER);
-        mMainLayout.setSpacing(3);
+        mButtonsLayout.setAlignment(Pos.CENTER);
     }
 
     private void addText(String message, String description) {
@@ -38,6 +38,8 @@ public final class MessageWindow extends Stage {
 
     public void showWindow() {
         mMainLayout.getChildren().add(mButtonsLayout);
+        setWidth(300);
+        setHeight(200);
         setScene(new Scene(mMainLayout, 0, 0));
         sizeToScene();
         show();

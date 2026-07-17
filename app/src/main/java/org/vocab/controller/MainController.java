@@ -39,10 +39,10 @@ public class MainController extends VBox {
             context.broadcastMessage(message);
         } else {
             MessageWindow messageWindow = new MessageWindow(
-                    "An update is available!",
+                    "Cannot start quiz.",
                     null, // TODO Pass main window (a future version of JFXWContext will be able to do it)
-                    "An update is available!",
-                    "Press the button below to download the latest version."
+                    "Not enough pairs available!",
+                    "You must add at least 3 pairs to start the quiz."
             );
             messageWindow.addAction("Ok", MessageWindow::closeWindow);
             messageWindow.showWindow();
