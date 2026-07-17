@@ -1,23 +1,20 @@
 package org.vocab;
 
-import javafx.geometry.Pos;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
-import javafx.scene.*;
-import javafx.application.Application;
-
+import com.fxcontext.main.Context;
 import com.fxcontext.message.Message;
 import com.fxcontext.receiver.MessageReceiver;
-import com.fxcontext.main.Context;
+import javafx.application.Application;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.image.Image;
+import javafx.stage.Stage;
+import org.vocab.utils.MessageWindow;
 
-import java.awt.*;
-import java.util.List;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
-import java.util.function.Consumer;
-import java.util.function.Supplier;
 
 public class App extends Application implements Context {
     public static final int STAGE_WIDTH  = 800;
@@ -40,47 +37,35 @@ public class App extends Application implements Context {
         mStage.setWidth(STAGE_WIDTH);
         mStage.setHeight(STAGE_HEIGHT);
 		mStage.setTitle("Vocabulary Helper");
-		mStage.show();
+        try (InputStream inputStream = getClass().getResourceAsStream("/icon/icon.png")) {
+            // noinspection ConstantConditions ; NPE will be caught.
+            mStage.getIcons().add(new Image(inputStream));
+        } catch (IOException | NullPointerException e) {
+            IO.println("[ERROR] An error occurred while trying to load window icon.");
+            e.printStackTrace();
+        }
+        mStage.show();
 
         checkForUpdates(mStage);
     }
 
-    @SuppressWarnings("all") // TODO: Refactor method in class.
     private void checkForUpdates(final Stage parentStage) {
-        final String RELEASES_URL = "http://github.com/iasonasTan/Vocabulary-Quiz/releases/latest";
-
-        final Supplier<List<Node>> nodeSupplier = () -> {
-            Label label = new Label("An update is available!");
-            label.setStyle("-fx-font-weight: bold; -fx-font-size: large;");
-
-            Label label1 = new Label("Press the button below to download the latest version.");
-
-            Button button = new Button("Go to download page.");
-            button.setOnAction(_ -> {
-                getHostServices().showDocument(RELEASES_URL);
-            });
-
-            return List.of(label, label1, button);
-        };
+        final String RELEASES_URL = "https://github.com/iasonasTan/Vocabulary-Quiz/releases/latest";
 
         VersionChecker versionChecker = new VersionChecker();
-        final int WIN_WIDTH = 400, WIN_HEIGHT = 200;
         if(!versionChecker.isUpToDate()) {
-            Stage stage = new Stage();
-            stage.initOwner(parentStage);
-            stage.setAlwaysOnTop(true);
-
-            VBox parent = new VBox();
-            parent.setAlignment(Pos.CENTER);
-            parent.setSpacing(3);
-            parent.getChildren().addAll(nodeSupplier.get());
-
-            stage.setScene(new Scene(parent, WIN_WIDTH, WIN_HEIGHT));
-            stage.setWidth(WIN_WIDTH);
-            stage.setHeight(WIN_HEIGHT);
-            stage.setTitle("Update available!");
-            stage.sizeToScene();
-            stage.show();
+            MessageWindow messageWindow = new MessageWindow(
+                    "An update is available!",
+                    mStage,
+                    "An update is available!",
+                    "Press the button below to download the latest version."
+            );
+            messageWindow.addAction("Go to download page", window -> {
+                    window.closeWindow();
+                    getHostServices().showDocument(RELEASES_URL);
+            });
+            messageWindow.addAction("Not now", MessageWindow::closeWindow);
+            messageWindow.showWindow();
         }
     }
 

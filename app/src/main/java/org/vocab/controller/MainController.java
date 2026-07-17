@@ -15,6 +15,7 @@ import java.nio.charset.StandardCharsets;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
+import org.vocab.utils.MessageWindow;
 
 public class MainController extends VBox {
     private final Vocabulary vocabulary = new Vocabulary();
@@ -30,11 +31,22 @@ public class MainController extends VBox {
 
     @FXML
     public void startQuiz() {
-        Message message = Message.newBuilder()
-            .setAction("start_quiz")
-            .putExtra("vocabulary", vocabulary.toString())
-            .build();
-        context.broadcastMessage(message);
+        if(vocabulary.hasMinimumWords()) {
+            Message message = Message.newBuilder()
+                    .setAction("start_quiz")
+                    .putExtra("vocabulary", vocabulary.toString())
+                    .build();
+            context.broadcastMessage(message);
+        } else {
+            MessageWindow messageWindow = new MessageWindow(
+                    "An update is available!",
+                    null, // TODO Pass main window (a future version of JFXWContext will be able to do it)
+                    "An update is available!",
+                    "Press the button below to download the latest version."
+            );
+            messageWindow.addAction("Ok", MessageWindow::closeWindow);
+            messageWindow.showWindow();
+        }
     }
 
     // Separated the file-loading part of startQuiz() into its own method,
