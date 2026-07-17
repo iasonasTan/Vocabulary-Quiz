@@ -3,6 +3,7 @@ package org.vocab;
 import java.util.*;
 
 public final class Vocabulary {
+    private static final int MINIMUM_WORDS = 3;
     private final List<Pair> mPairs = new ArrayList<>() {
         /**
          * Override for debugging.
@@ -58,7 +59,7 @@ public final class Vocabulary {
 
     /**
      * Returns a PairAndAnswers that contains a question,
-     * the correct answers, 
+     * the correct answers,
      * and a list with three answers (one of them is right).
      */
     public Optional<PairAndAnswers> randomPairAndAnswers() {
@@ -167,6 +168,10 @@ public final class Vocabulary {
         public String getQuestion() {
             return pair.getQuestion();
         }
+    }
+
+    public boolean hasMinimumWords() {
+        return mPairs.size() >= MINIMUM_WORDS;
     }
 
     /**
