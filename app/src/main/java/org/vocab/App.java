@@ -1,22 +1,24 @@
 package org.vocab;
 
-import javafx.geometry.Pos;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
-import javafx.scene.*;
-import javafx.application.Application;
-
+import com.fxcontext.main.Context;
 import com.fxcontext.message.Message;
 import com.fxcontext.receiver.MessageReceiver;
-import com.fxcontext.main.Context;
+import javafx.application.Application;
+import javafx.geometry.Pos;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 
-import java.awt.*;
-import java.util.List;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
-import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 public class App extends Application implements Context {
@@ -40,7 +42,14 @@ public class App extends Application implements Context {
         mStage.setWidth(STAGE_WIDTH);
         mStage.setHeight(STAGE_HEIGHT);
 		mStage.setTitle("Vocabulary Helper");
-		mStage.show();
+        try (InputStream inputStream = getClass().getResourceAsStream("/icon/icon.png")) {
+            // noinspection ConstantConditions ; NPE will be caught.
+            mStage.getIcons().add(new Image(inputStream));
+        } catch (IOException | NullPointerException e) {
+            IO.println("[ERROR] An error occurred while trying to load window icon.");
+            e.printStackTrace();
+        }
+        mStage.show();
 
         checkForUpdates(mStage);
     }
