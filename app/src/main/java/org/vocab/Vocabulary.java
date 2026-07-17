@@ -26,7 +26,7 @@ public final class Vocabulary {
     public Vocabulary() {
     }
 
-    public Vocabulary(String data) {
+    public Vocabulary(String data) throws ArrayIndexOutOfBoundsException {
         String[] pairs = data.split(","); // Get pairs
         for(String unsplitPair: pairs) {
             if(!unsplitPair.contains("=")) {
@@ -37,7 +37,7 @@ public final class Vocabulary {
     }
 
     public void add(String unsplit) throws ArrayIndexOutOfBoundsException {
-        String[] split = unsplit.replace(" ", "").split("=");
+        String[] split = unsplit.strip().split("=");
         add(split[0], split[1]);
     }
 
