@@ -1,20 +1,22 @@
 package org.vocab;
 
-import com.fxcontext.main.Context;
-import com.fxcontext.message.Message;
-import com.fxcontext.receiver.MessageReceiver;
-import javafx.application.Application;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.image.Image;
-import javafx.stage.Stage;
-import org.vocab.utils.MessageWindow;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+
+import org.vocab.utils.MessageWindow;
+
+import com.fxcontext.main.Context;
+import com.fxcontext.message.Message;
+import com.fxcontext.receiver.MessageReceiver;
+
+import javafx.application.Application;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.image.Image;
+import javafx.stage.Stage;
 
 public class App extends Application implements Context {
     public static final int STAGE_WIDTH  = 800;
@@ -94,7 +96,9 @@ public class App extends Application implements Context {
         @Override
         public void onReceive(Message message) {
             if(message.getAction().equals("start_quiz")) {
-                startQuiz(message.getBundle().getString("vocabulary"));
+                String vocab = message.getBundle().getString("vocabulary");
+                boolean reverse = Boolean.parseBoolean(message.getBundle().getString("reverse"));
+                startQuiz(vocab, reverse);
             } else if (message.getAction().equals("abort_app")) {
                 mStage.close();
                 System.exit(0);
@@ -103,14 +107,15 @@ public class App extends Application implements Context {
             }
         }
 
-        private void startQuiz(String vocab) {
+        private void startQuiz(String vocab, boolean reverse) {
             // Show quiz field
             setScene("quiz");
 
-            // Send vocabulary to main
+            // Send vocabulary to quiz
             Message message1 = Message.newBuilder()
                 .setAction("initialize_vocabulary")
                 .putExtra("vocabulary", vocab)
+                .putExtra("reverse", String.valueOf(reverse))
                 .build();
             broadcastMessage(message1);
         }

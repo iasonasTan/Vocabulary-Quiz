@@ -17,7 +17,7 @@ public final class VocabFileLoader {
         while((line = bufferedReader.readLine()) != null) {
             String[] lineSplit = line.split("=");
             vocabulary.add(lineSplit[0], lineSplit[1]);
-            IO.println("Pair: " + lineSplit[0] + " === " + lineSplit[1]);
+            System.out.println("Pair: " + lineSplit[0] + " === " + lineSplit[1]);
         }
     }
 }

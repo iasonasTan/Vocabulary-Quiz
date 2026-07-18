@@ -1,6 +1,9 @@
 package org.vocab;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
 
 public final class Vocabulary {
     private static final int MINIMUM_WORDS = 3;
@@ -62,27 +65,28 @@ public final class Vocabulary {
      * the correct answers,
      * and a list with three answers (one of them is right).
      */
-    public Optional<PairAndAnswers> randomPairAndAnswers() {
+    public Optional<PairAndAnswers> randomPairAndAnswers(boolean reverse) {
         // Returns an empty optional if there's no data.
         if(mPairs.isEmpty()) {
             return Optional.empty();
         }
 
         Pair pair = randomPair();
-        String value2 = randomPair().getAnswer();
-        String value3 = randomPair().getAnswer();
+        String distractor1 = randomPair().getAnswer(reverse);
+        String distractor2 = randomPair().getAnswer(reverse);
+        String correctAnswer = pair.getAnswer(reverse);
 
-        List<String> randomValues = new ArrayList<>(List.of(pair.getAnswer(), value2, value3)); // Put values in a shuffleable list.
+        List<String> randomValues = new ArrayList<>(List.of(correctAnswer, distractor1, distractor2));
         Collections.shuffle(randomValues); // Shuffle answers.
 
         // Return values packed in a PairAndAnswers record.
-        return Optional.of(new PairAndAnswers(pair, randomValues.toArray(new String[0])));
+        return Optional.of(new PairAndAnswers(pair, randomValues, reverse));
     }
 
     /**
      * Holds a pair of words, and it's learned value.
      */
-    private final class Pair implements Comparable<Pair> {
+    public final class Pair implements Comparable<Pair> {
         /**
          * A key and it's value.
          */
@@ -107,22 +111,23 @@ public final class Vocabulary {
          * @param answer answer to check.
          * @return Returns true if the given answer is the correct one; false otherwise.
          */
-        public boolean checkAnswer(String answer) {
-            if(answer.equals(value)) {
+        public boolean checkAnswer(String answer, boolean reverse) {
+            String expected = reverse ? key : value;
+            if(answer.equals(expected)) {
                 learned++;
                 Collections.sort(mPairs);
                 return true;
             }
-            learned-=2;
+            learned -= 2;
             return false;
         }
 
-        public String getQuestion() {
-            return key;
+        public String getQuestion(boolean reverse) {
+            return reverse ? value : key;
         }
 
-        public String getAnswer() {
-            return value;
+        public String getAnswer(boolean reverse) {
+            return reverse ? key : value;
         }
 
         public int getLearned() {
@@ -144,29 +149,29 @@ public final class Vocabulary {
      * Holds question and answers.
      * Supplies methods to check the reply.
      */
-    public record PairAndAnswers(Pair pair, String[] answers) {
+    public record PairAndAnswers(Pair pair, List<String> answers, boolean reverse) {
         /**
          * Checks if given data are non-null and valid.
          */
         public PairAndAnswers {
             if(answers == null)     throw new NullPointerException("No value can be null.");
-            if(answers.length != 3) throw new RuntimeException("Length of array 'answers' must be 3.");
+            if(answers.size() != 3) throw new RuntimeException("Length of list 'answers' must be 3.");
         }
 
         public boolean isAnswer0() {
-            return pair.checkAnswer(answers[0]);
+            return pair.checkAnswer(answers.get(0), reverse);
         }
 
         public boolean isAnswer1() {
-            return pair.checkAnswer(answers[1]);
+            return pair.checkAnswer(answers.get(1), reverse);
         }
 
         public boolean isAnswer2() {
-            return pair.checkAnswer(answers[2]);
+            return pair.checkAnswer(answers.get(2), reverse);
         }
 
         public String getQuestion() {
-            return pair.getQuestion();
+            return pair.getQuestion(reverse);
         }
     }
 

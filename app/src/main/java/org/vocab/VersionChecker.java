@@ -1,5 +1,6 @@
 package org.vocab;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -25,7 +26,7 @@ public final class VersionChecker {
             int latestVersion = getLatestVersion();
             return !(latestVersion > appVersion);
         } catch (IOException ioe) {
-            IO.println(ioe.getMessage());
+            System.out.println(ioe.getMessage());
             return false; // Tell 'false' so the user downloads the version without the bug.
         }
     }
@@ -64,8 +65,9 @@ public final class VersionChecker {
         if(inputStream == null) {
             throw new IOException("Could not read version from given InputStream (inputStream is null).");
         }
-        try (InputStreamReader inputStreamReader = new InputStreamReader(inputStream)) {
-            String version = inputStreamReader.readAllAsString().strip();
+        try (InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+             BufferedReader bufferedReader = new BufferedReader(inputStreamReader)) {
+            String version = bufferedReader.readLine().strip();
             return Integer.parseInt(version);
         } catch (NumberFormatException nfe) {
             throw new IOException("Could not read version from given InputStream (NumberFormatException).");

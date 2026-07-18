@@ -1,18 +1,19 @@
 package org.vocab.controller;
 
+import java.util.Optional;
+
+import org.vocab.Vocabulary;
+
 import com.fxcontext.main.Context;
 import com.fxcontext.message.Message;
 import com.fxcontext.receiver.MessageReceiver;
 
-import org.vocab.Vocabulary;
-
+import javafx.fxml.FXML;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.fxml.FXML;
-import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
-
-import java.util.Optional;
 
 public final class QuizController extends VBox {
     @FXML
@@ -23,6 +24,7 @@ public final class QuizController extends VBox {
 
     private Vocabulary.PairAndAnswers pair;
     private Vocabulary vocabulary;
+    private boolean reverse;
     private final Context context;
 
     public QuizController(Context context) {
@@ -44,6 +46,9 @@ public final class QuizController extends VBox {
             case KeyCode.DIGIT3:
             case KeyCode.NUMPAD3:
                 choice2action();
+                break;
+            default:
+                // Ignore all other key codes
                 break;
         }
     }
@@ -75,13 +80,13 @@ public final class QuizController extends VBox {
     }
 
     private void nextQuestion() {
-        Optional<Vocabulary.PairAndAnswers> pairOpt = vocabulary.randomPairAndAnswers();
-        pairOpt.ifPresent(pair -> {
-            this.pair = pair;
-            questionLabel.setText(pair.getQuestion());
-            choice1.setText(pair.answers()[0] + "[1]");
-            choice2.setText(pair.answers()[1] + "[2]");
-            choice3.setText(pair.answers()[2] + "[3]");
+        Optional<Vocabulary.PairAndAnswers> pairOpt = vocabulary.randomPairAndAnswers(reverse);
+        pairOpt.ifPresent(pairAndAnswers -> {
+            this.pair = pairAndAnswers;
+            questionLabel.setText(pairAndAnswers.getQuestion());
+            choice1.setText(pairAndAnswers.answers().get(0) + "[1]");
+            choice2.setText(pairAndAnswers.answers().get(1) + "[2]");
+            choice3.setText(pairAndAnswers.answers().get(2) + "[3]");
         });
     }
 
@@ -90,6 +95,7 @@ public final class QuizController extends VBox {
         public void onReceive(Message message) {
             if(message.getAction().equals("initialize_vocabulary")) {
                 vocabulary = new Vocabulary(message.getBundle().getString("vocabulary"));
+                reverse = Boolean.parseBoolean(message.getBundle().getString("reverse"));
                 nextQuestion();
             }
         }

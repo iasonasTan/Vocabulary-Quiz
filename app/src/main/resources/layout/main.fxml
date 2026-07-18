@@ -55,7 +55,12 @@
     </HBox>
 
     <HBox
-        spacing="10">
+        spacing="10"
+        alignment="CENTER">
+
+        <CheckBox
+            fx:id="reverseQuestions"
+            text="Reverse questions"/>
 
         <Button
             styleClass="button"
