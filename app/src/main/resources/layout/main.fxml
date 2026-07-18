@@ -58,6 +58,7 @@
         spacing="10">
 
         <Button
+            fx:id="startQuizButton"
             styleClass="button"
             text="Start Quiz"
             onAction="#startQuiz"/>

@@ -23,6 +23,9 @@ public class MainController extends VBox {
     @FXML
     public TextField wordPairInput, filePathInput;
 
+    @FXML
+    private Button startQuizButton;
+
     private final Context context;
 
     public MainController(Context context) {
@@ -38,13 +41,17 @@ public class MainController extends VBox {
                     .build();
             context.broadcastMessage(message);
         } else {
+            startQuizButton.setDisable(true);
             MessageWindow messageWindow = new MessageWindow(
                     "Cannot start quiz.",
-                    null, // TODO Pass main window (a future version of JFXWContext will be able to do it)
+                    context.getRootStage(),
                     "Not enough pairs available!",
                     "You must add at least 3 pairs to start the quiz."
             );
-            messageWindow.addAction("Ok", MessageWindow::closeWindow);
+            messageWindow.addAction("Ok", mw -> {
+                mw.closeWindow();
+                startQuizButton.setDisable(false);
+            });
             messageWindow.showWindow();
         }
     }
