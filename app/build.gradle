@@ -5,6 +5,7 @@ plugins {
 
 repositories {
     mavenCentral()
+    maven { url 'https://jitpack.io' }
 }
 
 javafx {
@@ -13,7 +14,7 @@ javafx {
 }
 
 dependencies {
-    implementation files('../libs/JFXWContextLib.jar')
+    implementation files("../libs/JJFXUtils.jar")
 }
 
 java {

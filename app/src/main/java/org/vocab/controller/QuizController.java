@@ -1,9 +1,8 @@
 package org.vocab.controller;
 
-import com.fxcontext.main.Context;
-import com.fxcontext.message.Message;
-import com.fxcontext.receiver.MessageReceiver;
-
+import com.jjfx.context.Context;
+import com.jjfx.message.Message;
+import com.jjfx.receiver.MessageReceiver;
 import org.vocab.Vocabulary;
 
 import javafx.scene.input.KeyCode;

@@ -1,7 +1,8 @@
 package org.vocab.controller;
 
-import com.fxcontext.main.Context;
-import com.fxcontext.message.Message;
+import com.jjfx.context.Context;
+import com.jjfx.message.Message;
+import com.jjfx.utils.MessageWindow;
 
 import org.vocab.Vocabulary;
 import org.vocab.VocabFileLoader;
@@ -15,7 +16,6 @@ import java.nio.charset.StandardCharsets;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
-import org.vocab.utils.MessageWindow;
 
 public class MainController extends VBox {
     private final Vocabulary vocabulary = new Vocabulary();

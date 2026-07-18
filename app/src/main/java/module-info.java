@@ -1,6 +1,7 @@
 module App {
+    requires JeJFX;
+
     requires javafx.fxml;
-    requires JavaFXContext;
     requires javafx.graphics;
     requires javafx.controls;
 

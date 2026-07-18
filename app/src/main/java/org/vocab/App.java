@@ -1,14 +1,14 @@
 package org.vocab;
 
-import com.fxcontext.main.Context;
-import com.fxcontext.message.Message;
-import com.fxcontext.receiver.MessageReceiver;
+import com.jjfx.context.Context;
+import com.jjfx.message.Message;
+import com.jjfx.receiver.MessageReceiver;
+import com.jjfx.utils.MessageWindow;
 import javafx.application.Application;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
-import org.vocab.utils.MessageWindow;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -88,6 +88,11 @@ public class App extends Application implements Context {
     @Override
     public void registerReceiver(MessageReceiver receiver) {
         mMessageReceivers.add(receiver);
+    }
+
+    @Override
+    public Stage getRootStage() {
+        return mStage;
     }
 
     private final class Receiver implements MessageReceiver {
