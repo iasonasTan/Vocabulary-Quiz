@@ -4,7 +4,6 @@ module App {
     requires javafx.fxml;
     requires javafx.graphics;
     requires javafx.controls;
-    requires jdk.jfr;
 
     exports org.vocab;
     exports org.vocab.controller;

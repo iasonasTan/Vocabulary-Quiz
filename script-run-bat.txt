@@ -1,8 +1,0 @@
-@echo off
-rem Run the application using the local runtime and jfx modules
-
-start "" ".\runtime\bin\javaw.exe" ^
-    --module-path ".;jfx\lib" ^
-    --enable-native-access=javafx.graphics ^
-    --add-modules javafx.base,JavaFXContext,javafx.graphics,javafx.controls,javafx.fxml ^
-    -jar app.jar

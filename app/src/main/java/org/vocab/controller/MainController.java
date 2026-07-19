@@ -76,7 +76,7 @@ public class MainController extends VBox {
         try {
             vocabulary.add(wordPairInput.getText());
             wordPairInput.setText("");
-        } catch (ArrayIndexOutOfBoundsException aioobe) {
+        } catch (ArrayIndexOutOfBoundsException _) {
             // Just let 'em know
             System.out.println("[WARNING] Pair couldn't be added.");
         }
