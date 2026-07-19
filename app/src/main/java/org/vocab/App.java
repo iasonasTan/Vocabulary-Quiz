@@ -20,8 +20,8 @@ public class App extends Application implements Context {
     public static final int STAGE_WIDTH  = 800;
     public static final int STAGE_HEIGHT = 600;
 
-    static void main(String[] args) {
-        launch(args);
+    static void main() {
+        launch();
     }
 
     private final List<MessageReceiver> mMessageReceivers = new ArrayList<>();

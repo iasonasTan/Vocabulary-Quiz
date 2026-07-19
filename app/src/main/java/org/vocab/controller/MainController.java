@@ -67,7 +67,15 @@ public class MainController extends VBox {
             vfl.loadVocab(reader);
             filePathInput.setText("");
         }catch (IOException ioe){
+            MessageWindow messageWindow = new MessageWindow(
+                    "File not found.",
+                    context.getRootStage(),
+                    "Could not find file.",
+                    "The file you entered does not exist. Double-Check the file path.");
+            messageWindow.addAction("Ok", MessageWindow::closeWindow);
+            messageWindow.showWindow();
             System.out.println("[WARNING] File couldn't be loaded.");
+
         }
     }
 
