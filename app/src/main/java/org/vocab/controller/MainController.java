@@ -4,6 +4,7 @@ import com.jjfx.context.Context;
 import com.jjfx.message.Message;
 import com.jjfx.utils.MessageWindow;
 
+import javafx.scene.Scene;
 import org.vocab.Vocabulary;
 import org.vocab.VocabFileLoader;
 
@@ -12,6 +13,7 @@ import java.io.InputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
+import java.util.Objects;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -25,6 +27,9 @@ public class MainController extends VBox {
 
     @FXML
     private Button startQuizButton;
+
+    @FXML
+    private CheckBox darkThemeCheckbox;
 
     private final Context context;
 
@@ -76,6 +81,18 @@ public class MainController extends VBox {
             messageWindow.showWindow();
             System.out.println("[WARNING] File couldn't be loaded.");
 
+        }
+    }
+
+    //Lets the user manually choose between light and dark theme
+    @FXML
+    public void toggleDarkTheme(){
+        Scene scene = darkThemeCheckbox.getScene();
+        scene.getStylesheets().clear();
+        if(darkThemeCheckbox.isSelected()){
+            scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/style/dark_theme_style.css")).toExternalForm());
+        } else {
+            scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/style/light_theme_style.css")).toExternalForm());
         }
     }
 
