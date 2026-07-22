@@ -1,4 +1,4 @@
-package org.vocab;
+package org.vocab.vocab;
 
 import java.util.*;
 

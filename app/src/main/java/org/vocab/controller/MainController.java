@@ -1,17 +1,22 @@
 package org.vocab.controller;
 
 import com.je.core.JeLib;
+import com.je.core.util.Bundle;
+import com.je.io.configuration.Configuration;
 import com.jjfx.context.Context;
 import com.jjfx.message.Message;
 import com.jjfx.utils.MessageWindow;
 
+import javafx.application.Platform;
 import javafx.scene.Scene;
-import org.vocab.Vocabulary;
-import org.vocab.VocabFileLoader;
+import org.vocab.App;
+import org.vocab.vocab.Vocabulary;
+import org.vocab.vocab.VocabFileLoader;
 
 import javafx.stage.FileChooser;
 
 import java.io.*;
+import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 
@@ -71,7 +76,7 @@ public class MainController extends VBox {
             VocabFileLoader vfl = new VocabFileLoader(vocabulary);
             vfl.loadVocab(reader);
             filePathInput.setText("");
-        }catch (IOException ioe){
+        }catch (IOException ioe) {
             MessageWindow messageWindow = new MessageWindow(
                     "File not found.",
                     context.getRootStage(),
@@ -80,10 +85,7 @@ public class MainController extends VBox {
             messageWindow.addAction("Ok", MessageWindow::closeWindow);
             messageWindow.showWindow();
             JeLib.console().warn("File couldn't be loaded.");
-
         }
-        
-        
     }
 
     @FXML
@@ -99,15 +101,27 @@ public class MainController extends VBox {
     }
 
     //Lets the user manually choose between light and dark theme
+    //Get's called when the checkbox changes
     @FXML
     public void toggleDarkTheme(){
         Scene scene = darkThemeCheckbox.getScene();
+        final boolean darkTheme = darkThemeCheckbox.isSelected();
+
+        Bundle bundle = Bundle.builder().put(App.DARK_THEME, darkTheme).build();
+        Configuration.storeBundle(App.SETTING_THEME_PATH, bundle);
+
+        JeLib.console().log("Changing style in MainController: darkTheme = " + darkTheme);
+
         scene.getStylesheets().clear();
-        if(darkThemeCheckbox.isSelected()){
-            scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/style/dark_theme_style.css")).toExternalForm());
+        if(darkTheme) {
+            String style = Objects.requireNonNull(getClass().getResource("/style/dark_theme_style.css")).toExternalForm();
+            scene.getRoot().getStylesheets().add(style);
         } else {
-            scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/style/light_theme_style.css")).toExternalForm());
+            scene.getRoot().setStyle("");
         }
+
+        scene.getRoot().applyCss();
+        scene.getRoot().layout();
     }
 
     @FXML

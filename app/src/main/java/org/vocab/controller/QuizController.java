@@ -3,7 +3,7 @@ package org.vocab.controller;
 import com.jjfx.context.Context;
 import com.jjfx.message.Message;
 import com.jjfx.receiver.MessageReceiver;
-import org.vocab.Vocabulary;
+import org.vocab.vocab.Vocabulary;
 
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;

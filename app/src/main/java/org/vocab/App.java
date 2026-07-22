@@ -1,6 +1,8 @@
 package org.vocab;
 
 import com.je.core.JeLib;
+import com.je.core.util.Bundle;
+import com.je.io.configuration.Configuration;
 import com.jjfx.context.Context;
 import com.jjfx.message.Message;
 import com.jjfx.receiver.MessageReceiver;
@@ -14,11 +16,15 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 public class App extends Application implements Context {
+    public static final String SETTING_THEME_PATH = "dark_theme.dat";
+    public static final String DARK_THEME = "org.vocab.settings.darkTheme";
+
     public static final int STAGE_WIDTH  = 800;
     public static final int STAGE_HEIGHT = 600;
 
@@ -32,6 +38,7 @@ public class App extends Application implements Context {
     @Override
     public void start(Stage stage) {
         mStage = stage;
+        Configuration.init("Pairper");
 
         registerReceiver(new Receiver());
 
@@ -73,34 +80,29 @@ public class App extends Application implements Context {
     //Preserves the current theme when switching between scenes
     //Keeps the dark theme checkbox visually in sync with the active stylesheet
     private void setScene(String name) {
-        String currentTheme = null;
+        // Load theme from check box
+        final Bundle bundle = Configuration.loadBundle(SETTING_THEME_PATH);
+        final boolean darkTheme = bundle.getBoolean(DARK_THEME, false);
+
+        final URL url = getClass().getResource(darkTheme ? "/style/dark_theme_style.css" : "/style/light_theme_style.css");
+        JeLib.console().log("Showing new scene. Style URL: " + url);
 
         Parent scene = Context.loadFXML(
                 this,
                 getClass().getResource("/layout/"+name+".fxml"),
-                Objects.requireNonNull(getClass().getResource("/style/light_theme_style.css"))
+                Objects.requireNonNull(url)
         );
 
         Scene newScene = new Scene(scene, STAGE_WIDTH, STAGE_HEIGHT);
 
-        if(mStage.getScene() != null) {
-            for(String theme : mStage.getScene().getStylesheets()){
-                if(theme.contains("dark_theme_style") || theme.contains("light_theme_style")){
-                    currentTheme = theme;
-                    break;
-                }
-            }
-        }
-
-        if(currentTheme != null) {
-            newScene.getStylesheets().add(currentTheme);
-        }
-
         mStage.setScene(newScene);
 
-        CheckBox themeCheckbox = (CheckBox) newScene.lookup("#darkThemeCheckbox");
-        if(themeCheckbox != null && currentTheme != null && currentTheme.contains("dark_theme_style")) {
-            themeCheckbox.setSelected(true);
+        // Set theme check box selected if it's found and valid
+        if(darkTheme) {
+            CheckBox themeCheckbox = (CheckBox)newScene.lookup("#darkThemeCheckbox");
+            if(themeCheckbox != null) {
+                themeCheckbox.setSelected(true);
+            }
         }
     }
 

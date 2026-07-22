@@ -21,4 +21,13 @@
 * {
     -fx-font-size: larger;
     -fx-font-family: "Arial";
+    -fx-base: #f0f0f0;
+    -fx-background: #ffffff;
+    -fx-control-inner-background: #ffffff;
+}
+
+.root {
+    -fx-base: #f0f0f0;
+    -fx-background: #ffffff;
+    -fx-control-inner-background: #ffffff;
 }
