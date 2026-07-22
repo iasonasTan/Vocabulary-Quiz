@@ -7,6 +7,7 @@ import com.jjfx.utils.MessageWindow;
 import org.vocab.Vocabulary;
 import org.vocab.VocabFileLoader;
 
+import javafx.stage.FileChooser;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.IOException;
@@ -77,6 +78,20 @@ public class MainController extends VBox {
             System.out.println("[WARNING] File couldn't be loaded.");
 
         }
+        
+        
+    }
+
+    @FXML
+    public void browseFile() {
+       FileChooser fileChooser = new FileChooser();
+       fileChooser.setTitle("Select Vocabulary File");
+
+       java.io.File selectedFile = fileChooser.showOpenDialog(context.getRootStage());
+
+       if (selectedFile != null) {
+        filePathInput.setText(selectedFile.getAbsolutePath());
+       }
     }
 
     @FXML
