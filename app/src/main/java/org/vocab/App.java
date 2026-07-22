@@ -7,6 +7,7 @@ import com.jjfx.utils.MessageWindow;
 import javafx.application.Application;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.CheckBox;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
@@ -68,13 +69,38 @@ public class App extends Application implements Context {
         }
     }
 
+    //Preserves the current theme when switching between scenes
+    //Keeps the dark theme checkbox visually in sync with the active stylesheet
     private void setScene(String name) {
+        String currentTheme = null;
+
         Parent scene = Context.loadFXML(
-            this,
-            getClass().getResource("/layout/"+name+".fxml"),
-                Objects.requireNonNull(getClass().getResource("/style/style.css"))
+                this,
+                getClass().getResource("/layout/"+name+".fxml"),
+                Objects.requireNonNull(getClass().getResource("/style/light_theme_style.css"))
         );
-        mStage.setScene(new Scene(scene, STAGE_WIDTH, STAGE_HEIGHT));
+
+        Scene newScene = new Scene(scene, STAGE_WIDTH, STAGE_HEIGHT);
+
+        if(mStage.getScene() != null) {
+            for(String theme : mStage.getScene().getStylesheets()){
+                if(theme.contains("dark_theme_style") || theme.contains("light_theme_style")){
+                    currentTheme = theme;
+                    break;
+                }
+            }
+        }
+
+        if(currentTheme != null) {
+            newScene.getStylesheets().add(currentTheme);
+        }
+
+        mStage.setScene(newScene);
+
+        CheckBox themeCheckbox = (CheckBox) newScene.lookup("#darkThemeCheckbox");
+        if(themeCheckbox != null && currentTheme != null && currentTheme.contains("dark_theme_style")) {
+            themeCheckbox.setSelected(true);
+        }
     }
 
     @Override

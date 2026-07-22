@@ -14,10 +14,19 @@
         styleClass="title"
         text="Vocabulary Helper"/>
 
+    <!--Checkbox to enable/disable the dark theme-->
+    <HBox alignment="TOP_RIGHT">
+        <CheckBox
+            styleClass="checkbox"
+            text="Dark Theme"
+            fx:id="darkThemeCheckbox"
+            onAction="#toggleDarkTheme"/>
+    </HBox>
+
     <HBox
         alignment="CENTER"
         spacing="10">
-        
+
         <VBox
             styleClass="subdiv"
             spacing="10">
