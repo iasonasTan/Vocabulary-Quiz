@@ -50,10 +50,18 @@
             spacing="10"
             alignment="CENTER_RIGHT">
 
-            <TextField
-                styleClass="input"
-                promptText="File path"
-                fx:id="filePathInput"/>
+            <HBox spacing="10">
+
+               <TextField
+                   styleClass="input"
+                   promptText="File path"
+                   fx:id="filePathInput"/>
+
+               <Button
+                   styleClass="button"
+                   text="Browse..."
+                   onAction="#browseFile"/>  
+            </HBox>       
 
             <!--Loads word pairs from file to the current vocabulary-->
             <Button
