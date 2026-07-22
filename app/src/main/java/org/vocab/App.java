@@ -1,5 +1,6 @@
 package org.vocab;
 
+import com.je.core.JeLib;
 import com.jjfx.context.Context;
 import com.jjfx.message.Message;
 import com.jjfx.receiver.MessageReceiver;
@@ -42,7 +43,7 @@ public class App extends Application implements Context {
             // noinspection ConstantConditions ; NPE will be caught.
             mStage.getIcons().add(new Image(inputStream));
         } catch (IOException | NullPointerException e) {
-            IO.println("[ERROR] An error occurred while trying to load window icon.");
+            JeLib.console().error("Cannot load window icon.");
             e.printStackTrace();
         }
         mStage.show();

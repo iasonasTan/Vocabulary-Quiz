@@ -1,5 +1,7 @@
 package org.vocab;
 
+import com.je.core.JeLib;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -25,7 +27,7 @@ public final class VersionChecker {
             int latestVersion = getLatestVersion();
             return !(latestVersion > appVersion);
         } catch (IOException ioe) {
-            IO.println(ioe.getMessage());
+            JeLib.console().exception(ioe);
             return false; // Tell 'false' so the user downloads the version without the bug.
         }
     }

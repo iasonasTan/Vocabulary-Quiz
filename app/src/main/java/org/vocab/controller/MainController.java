@@ -1,5 +1,6 @@
 package org.vocab.controller;
 
+import com.je.core.JeLib;
 import com.jjfx.context.Context;
 import com.jjfx.message.Message;
 import com.jjfx.utils.MessageWindow;
@@ -9,10 +10,8 @@ import org.vocab.Vocabulary;
 import org.vocab.VocabFileLoader;
 
 import javafx.stage.FileChooser;
-import java.io.FileInputStream;
-import java.io.InputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
+
+import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 
@@ -67,7 +66,7 @@ public class MainController extends VBox {
     @FXML
     public void loadFromFile(){
         String path = filePathInput.getText();
-        try(InputStream inputStream = new FileInputStream(path);
+        try(FileInputStream inputStream = new FileInputStream(path);
             InputStreamReader reader = new InputStreamReader(inputStream, StandardCharsets.UTF_8)) {
             VocabFileLoader vfl = new VocabFileLoader(vocabulary);
             vfl.loadVocab(reader);
@@ -80,7 +79,7 @@ public class MainController extends VBox {
                     "The file you entered does not exist. Double-Check the file path.");
             messageWindow.addAction("Ok", MessageWindow::closeWindow);
             messageWindow.showWindow();
-            System.out.println("[WARNING] File couldn't be loaded.");
+            JeLib.console().warn("File couldn't be loaded.");
 
         }
         
@@ -118,7 +117,7 @@ public class MainController extends VBox {
             wordPairInput.setText("");
         } catch (ArrayIndexOutOfBoundsException _) {
             // Just let 'em know
-            System.out.println("[WARNING] Pair couldn't be added.");
+            JeLib.console().warn("Pair couldn't be added.");
         }
     }
 
