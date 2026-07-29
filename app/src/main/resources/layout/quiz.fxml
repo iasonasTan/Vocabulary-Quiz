@@ -42,9 +42,19 @@
             fx:id="choice3"/>
     </HBox>
 
-    <Button
-        styleClass="button"
-        text="Back"
-        onAction="#back"/>
+    <HBox
+        spacing="10">
+
+        <Button
+                styleClass="button"
+                text="Back"
+                onAction="#back"/>
+
+        <CheckBox
+            fx:id="reverseCheckbox"
+            text="Reverse"
+            styleClass="checkbox"
+            onAction="#reverseOrder" />
+    </HBox>
 
 </VBox>

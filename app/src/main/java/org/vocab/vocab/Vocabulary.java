@@ -1,9 +1,12 @@
 package org.vocab.vocab;
 
+import com.je.core.JeLib;
+
 import java.util.*;
 
 public final class Vocabulary {
     private static final int MINIMUM_WORDS = 3;
+
     private final List<Pair> mPairs = new ArrayList<>() {
         /**
          * Override for debugging.
@@ -69,24 +72,37 @@ public final class Vocabulary {
         }
 
         Pair pair = randomPair();
-        String value2 = randomPair().getAnswer();
-        String value3 = randomPair().getAnswer();
+        Pair distractor1 = randomPair(), distractor2 = randomPair();
 
-        List<String> randomValues = new ArrayList<>(List.of(pair.getAnswer(), value2, value3)); // Put values in a shuffleable list.
+        List<Pair> randomValues = new ArrayList<>(List.of(pair, distractor1, distractor2)); // Put values in a shuffleable list.
         Collections.shuffle(randomValues); // Shuffle answers.
 
         // Return values packed in a PairAndAnswers record.
-        return Optional.of(new PairAndAnswers(pair, randomValues.toArray(new String[0])));
+        return Optional.of(new PairAndAnswers(pair, randomValues.toArray(new Pair[0])));
+    }
+
+    public void setReverse(boolean reverse) {
+        JeLib.console().log("Reverse: "+reverse);
+        Pair.sReverse = reverse;
+    }
+
+    public boolean isReverse() {
+        return Pair.sReverse;
     }
 
     /**
      * Holds a pair of words, and it's learned value.
      */
-    private final class Pair implements Comparable<Pair> {
+    protected final class Pair implements Comparable<Pair> {
         /**
          * A key and it's value.
          */
         private final String key, value;
+
+        /**
+         * If true, key and value will be reversed.
+         */
+        public static boolean sReverse = false;
 
         /**
          * Indicates if the word is either learned or not learned.
@@ -108,7 +124,7 @@ public final class Vocabulary {
          * @return Returns true if the given answer is the correct one; false otherwise.
          */
         public boolean checkAnswer(String answer) {
-            if(answer.equals(value)) {
+            if(answer.equals(getAnswer()) || answer.equals(getQuestion())) {
                 learned++;
                 Collections.sort(mPairs);
                 return true;
@@ -118,11 +134,11 @@ public final class Vocabulary {
         }
 
         public String getQuestion() {
-            return key;
+            return !sReverse?key:value;
         }
 
         public String getAnswer() {
-            return value;
+            return !sReverse?value:key;
         }
 
         public int getLearned() {
@@ -137,36 +153,6 @@ public final class Vocabulary {
         @Override
         public String toString() {
             return key+"="+value;
-        }
-    }
-
-    /**
-     * Holds question and answers.
-     * Supplies methods to check the reply.
-     */
-    public record PairAndAnswers(Pair pair, String[] answers) {
-        /**
-         * Checks if given data are non-null and valid.
-         */
-        public PairAndAnswers {
-            if(answers == null)     throw new NullPointerException("No value can be null.");
-            if(answers.length != 3) throw new RuntimeException("Length of array 'answers' must be 3.");
-        }
-
-        public boolean isAnswer0() {
-            return pair.checkAnswer(answers[0]);
-        }
-
-        public boolean isAnswer1() {
-            return pair.checkAnswer(answers[1]);
-        }
-
-        public boolean isAnswer2() {
-            return pair.checkAnswer(answers[2]);
-        }
-
-        public String getQuestion() {
-            return pair.getQuestion();
         }
     }
 

@@ -3,11 +3,9 @@ package org.vocab.controller;
 import com.je.core.JeLib;
 import com.je.core.util.Bundle;
 import com.je.io.configuration.Configuration;
-
 import com.jjfx.context.Context;
 import com.jjfx.message.Message;
 import com.jjfx.utils.MessageWindow;
-
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
@@ -17,7 +15,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
-
 import org.vocab.util.MessageWindowShower;
 import org.vocab.vocab.VocabFileLoader;
 import org.vocab.vocab.Vocabulary;
@@ -45,7 +42,7 @@ public class LoadController extends VBox implements Initializable {
     private Button startQuizButton;
 
     @FXML
-    private CheckBox darkThemeCheckbox;
+    private CheckBox darkThemeCheckbox, reverseOrderCheckbox;
 
     @FXML
     private Label titleLabel;
@@ -170,8 +167,23 @@ public class LoadController extends VBox implements Initializable {
         context.broadcastMessage(message);
     }
 
+    /**
+     * Called to initialize a controller after its root element has been
+     * completely processed.
+     *
+     * @param location  The location used to resolve relative paths for the root object, or
+     *                  {@code null} if the location is not known.
+     * @param resources The resources used to localize the root object, or {@code null} if
+     *                  the root object was not localized.
+     */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         loadVersion();
+        reverseOrderCheckbox.setSelected(vocabulary.isReverse());
+    }
+
+    @FXML
+    private void reverseOrder() {
+        vocabulary.setReverse(reverseOrderCheckbox.isSelected());
     }
 }

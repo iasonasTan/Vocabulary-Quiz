@@ -16,12 +16,21 @@
         text="Vocabulary Helper"/>
 
     <!--Checkbox to enable/disable the dark theme-->
-    <HBox alignment="TOP_RIGHT">
+    <HBox
+        alignment="TOP_RIGHT"
+        spacing="10">
+
         <CheckBox
             styleClass="checkbox"
             text="Dark Theme"
             fx:id="darkThemeCheckbox"
-            onAction="#toggleDarkTheme"/>
+            onAction="#toggleDarkTheme" />
+
+        <CheckBox
+            styleClass="checkbox"
+            text="Reverse"
+            fx:id="reverseOrderCheckbox"
+            onAction="#reverseOrder" />
     </HBox>
 
     <HBox
