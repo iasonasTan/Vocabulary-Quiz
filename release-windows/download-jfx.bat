@@ -14,4 +14,4 @@ tar -xzf $TEMP_FILE -C $INSTALL_DIR --strip-components=1
 
 Remove-Item $TEMP_FILE
 
-Write-Host "JavaFX downloaded successfuly!"
+Write-Host "JavaFX downloaded successfully!"

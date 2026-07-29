@@ -29,6 +29,7 @@ jobs:
           .\gradlew.bat assemble
 
       - name: Download JavaFX
+        shell: powershell
         run: |
           cd release-windows
           .\download-jfx.bat
