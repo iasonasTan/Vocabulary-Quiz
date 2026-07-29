@@ -1,0 +1,37 @@
+# Run this workflow when a release is published (change types to include created/draft as you prefer)
+name: Build & attach release assets for Windows
+
+on:
+  release:
+    types: [published]
+
+permissions:
+  contents: write   # required to upload release assets
+
+jobs:
+  release-windows:
+    runs-on: windows-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 25
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '25'
+
+      - name: Run Windows release script
+        working-directory: ./release-windows
+        run: |
+          .\generate-release.bat
+
+      - name: Upload Windows asset to GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: generated/Vocabulary-Helper-Windows.zip
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
