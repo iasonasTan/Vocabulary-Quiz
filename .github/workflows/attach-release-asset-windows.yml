@@ -31,13 +31,13 @@ jobs:
       - name: Download JavaFX
         run: |
           cd release-windows
-          .\download-jfx.ps1
+          .\download-jfx.bat
 
 
       - name: Run Windows release script
         working-directory: release-windows
         run: |
-          .\make-release.bat "..\jfx-windows\" "$env:JAVA_HOME"
+          .\make-release.ps1 "..\jfx-windows\" "$env:JAVA_HOME"
 
       - name: Upload Windows asset to GitHub Release
         uses: softprops/action-gh-release@v2
