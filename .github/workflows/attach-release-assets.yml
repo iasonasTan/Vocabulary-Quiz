@@ -25,19 +25,21 @@ jobs:
       - name: Download JavaFX
         run: |
           chmod +x release-linux/download-jfx.sh
-          ./release-linux/download-jfx.sh
+          cd release-linux/
+          ./download-jfx.sh
 
       - name: Run Linux release script
         run: |
           chmod +x release-linux/make-release.sh
-          ./release-linux/make-release.sh "$(pwd)/jfx-linux/" $JAVA_HOME
+          cd release-linux/
+          ./make-release.sh "$(pwd)/jfx-linux/" $JAVA_HOME
 
       - name: Upload Linux asset to GitHub Release
         uses: actions/upload-release-asset@v1
         with:
           upload_url: ${{ github.event.release.upload_url }}
           asset_path: ./generated/release-linux.zip
-          asset_name: Vocabulary-Quiz--Linux.zip
+          asset_name: Vocabulary-Quiz-Linux.zip
           asset_content_type: application/zip
 
   windows:
