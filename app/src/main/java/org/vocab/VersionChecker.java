@@ -28,7 +28,7 @@ public final class VersionChecker {
             return !(latestVersion > appVersion);
         } catch (IOException ioe) {
             JeLib.console().exception(ioe);
-            return false; // Tell 'false' so the user downloads the version without the bug.
+            return true;
         }
     }
 

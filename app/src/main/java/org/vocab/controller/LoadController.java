@@ -9,9 +9,11 @@ import com.jjfx.message.Message;
 import com.jjfx.utils.MessageWindow;
 
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
@@ -22,15 +24,18 @@ import org.vocab.vocab.Vocabulary;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.Objects;
+import java.util.ResourceBundle;
 
 import static org.vocab.App.DARK_THEME;
 import static org.vocab.App.SETTING_THEME_PATH;
 
 @SuppressWarnings("unused")
-public class LoadController extends VBox {
+public class LoadController extends VBox implements Initializable {
     private final Vocabulary vocabulary = new Vocabulary();
 
     @FXML
@@ -42,10 +47,25 @@ public class LoadController extends VBox {
     @FXML
     private CheckBox darkThemeCheckbox;
 
+    @FXML
+    private Label titleLabel;
+
     private final Context context;
 
     public LoadController(Context context) {
         this.context = context;
+    }
+
+    @SuppressWarnings("ConstantConditions")
+    private void loadVersion() {
+        try (InputStream inputStream = getClass().getResourceAsStream("/app_version.txt");
+                InputStreamReader reader = new InputStreamReader(inputStream)) {
+            String versionString = reader.readAllAsString().strip();
+            String versionStringFormatted = String.format(" (Version %s)", versionString);
+            titleLabel.setText(titleLabel.getText() + versionStringFormatted);
+        } catch (IOException | NullPointerException e) {
+            JeLib.console().error("Could not load version. " + e);
+        }
     }
 
     @FXML
@@ -148,5 +168,10 @@ public class LoadController extends VBox {
             .setAction("abort_app")
             .build();
         context.broadcastMessage(message);
+    }
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        loadVersion();
     }
 }
