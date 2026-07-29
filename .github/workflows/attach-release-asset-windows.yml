@@ -31,7 +31,7 @@ jobs:
       - name: Download JavaFX
         run: |
           cd release-windows
-          .\download-jfx.bat
+          .\download-jfx.ps1
 
 
       - name: Run Windows release script
@@ -42,6 +42,6 @@ jobs:
       - name: Upload Windows asset to GitHub Release
         uses: softprops/action-gh-release@v2
         with:
-          files: generated/Vocabulary-Helper-Windows.zip
+          files: generated/Vocabulary-Quiz-Windows.zip
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
