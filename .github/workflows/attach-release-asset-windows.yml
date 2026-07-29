@@ -35,8 +35,8 @@ jobs:
 
 
       - name: Run Windows release script
+        working-directory: release-windows
         run: |
-          cd release-windows
           .\generate-release.bat "$pwd\..\jfx-windows\" "$env:JAVA_HOME"
 
       - name: Upload Windows asset to GitHub Release
