@@ -112,7 +112,7 @@ public class MainController extends VBox {
 
         JeLib.console().log("Changing style in MainController: darkTheme = " + darkTheme);
 
-        scene.getStylesheets().clear();
+        scene.getRoot().getStylesheets().clear();
         if(darkTheme) {
             String style = Objects.requireNonNull(getClass().getResource("/style/dark_theme_style.css")).toExternalForm();
             scene.getRoot().getStylesheets().add(style);
