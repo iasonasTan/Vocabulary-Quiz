@@ -94,6 +94,6 @@ if (Test-Path "..\generated") {
 New-Item -ItemType Directory -Path "..\generated" | Out-Null
 
 # Compress-Archive handles the native zip creation
-Compress-Archive -Path "temp\*" -DestinationPath "..\generated\VocabularyHelper.zip" -Force
+Compress-Archive -Path "temp\*" -DestinationPath "..\generated\release-windows.zip" -Force
 
 Write-Host "Done!"
