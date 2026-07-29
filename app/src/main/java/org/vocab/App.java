@@ -13,6 +13,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.CheckBox;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
+import org.vocab.util.MessageWindowShower;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -42,7 +43,7 @@ public class App extends Application implements Context {
 
         registerReceiver(new Receiver());
 
-        setScene("main");
+        setScene("load");
         mStage.setWidth(STAGE_WIDTH);
         mStage.setHeight(STAGE_HEIGHT);
 		mStage.setTitle("Vocabulary Helper");
@@ -73,8 +74,7 @@ public class App extends Application implements Context {
                     getHostServices().showDocument(RELEASES_URL);
             });
             messageWindow.addAction("Not now", MessageWindow::close);
-            boolean darkTheme = Configuration.loadBundle(SETTING_THEME_PATH).getBoolean(DARK_THEME, false);
-            messageWindow.showWindow(darkTheme);
+            MessageWindowShower.showThemedMessageWindow(messageWindow);
         }
     }
 
@@ -135,7 +135,7 @@ public class App extends Application implements Context {
                 mStage.close();
                 System.exit(0);
             } else if (message.getAction().equals("main")) {
-                setScene("main");
+                setScene("load");
             }
         }
 

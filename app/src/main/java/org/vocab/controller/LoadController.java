@@ -16,6 +16,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 
+import org.vocab.util.MessageWindowShower;
 import org.vocab.vocab.VocabFileLoader;
 import org.vocab.vocab.Vocabulary;
 
@@ -29,7 +30,7 @@ import static org.vocab.App.DARK_THEME;
 import static org.vocab.App.SETTING_THEME_PATH;
 
 @SuppressWarnings("unused")
-public class MainController extends VBox {
+public class LoadController extends VBox {
     private final Vocabulary vocabulary = new Vocabulary();
 
     @FXML
@@ -43,7 +44,7 @@ public class MainController extends VBox {
 
     private final Context context;
 
-    public MainController(Context context) {
+    public LoadController(Context context) {
         this.context = context;
     }
 
@@ -67,8 +68,7 @@ public class MainController extends VBox {
                 mw.close();
                 startQuizButton.setDisable(false);
             });
-            boolean darkTheme = Configuration.loadBundle(SETTING_THEME_PATH).getBoolean(DARK_THEME, false);
-            messageWindow.showWindow(darkTheme);
+            MessageWindowShower.showThemedMessageWindow(messageWindow);
         }
     }
 
@@ -89,8 +89,7 @@ public class MainController extends VBox {
                     "Could not find file.",
                     "The file you entered does not exist. Double-Check the file path.");
             messageWindow.addAction("Ok", MessageWindow::close);
-            boolean darkTheme = Configuration.loadBundle(SETTING_THEME_PATH).getBoolean(DARK_THEME, false);
-            messageWindow.showWindow(darkTheme);
+            MessageWindowShower.showThemedMessageWindow(messageWindow);
             JeLib.console().warn("File couldn't be loaded.");
         }
     }
@@ -117,7 +116,7 @@ public class MainController extends VBox {
         Bundle bundle = Bundle.builder().put(DARK_THEME, darkTheme).build();
         Configuration.storeBundle(SETTING_THEME_PATH, bundle);
 
-        JeLib.console().log("Changing style in MainController: darkTheme = " + darkTheme);
+        JeLib.console().log("Changing style in LoadController: darkTheme = " + darkTheme);
 
         scene.getRoot().getStylesheets().clear();
         if(darkTheme) {
