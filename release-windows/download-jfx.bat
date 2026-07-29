@@ -1,17 +1,21 @@
-$URL = "https://download.java.net/java/GA/javafx25.0.2/1ccc8ce474414c94ade008f8833286e8/4/openjfx-25.0.2_windows-x64_bin-sdk.zip"
-$INSTALL_DIR = "jfx-windows"
-$TEMP_FILE = "$env:TEMP\openjfx.zip"
+set "URL=https://java.net"
+set "INSTALL_DIR=jfx-windows"
+set "TEMP_FILE=%TEMP%\openjfx.zip"
+set "EXTRACT_TEMP=%TEMP%\javafx_extracted"
 
-if (!(Test-Path $INSTALL_DIR)) {
-    New-Item -ItemType Directory -Force -Path $INSTALL_DIR | Out-Null
-}
+if not exist "%INSTALL_DIR%" mkdir "%INSTALL_DIR%"
+if exist "%EXTRACT_TEMP%" rmdir /s /q "%EXTRACT_TEMP%"
+mkdir "%EXTRACT_TEMP%"
 
-Write-Host "Downloading javafx sdk..."
-Invoke-WebRequest -Uri $URL -OutFile $TEMP_FILE
+echo Downloading javafx sdk...
+curl -L -o "%TEMP_FILE%" "%URL%"
 
-Write-Host "Unzipping javafx sdk..."
-tar -xzf $TEMP_FILE -C $INSTALL_DIR --strip-components=1
+echo Unzipping javafx sdk...
+tar -xf "%TEMP_FILE%" -C "%EXTRACT_TEMP%"
 
-Remove-Item $TEMP_FILE
+for /d %%i in ("%EXTRACT_TEMP%\*") do move "%%i\*" "%INSTALL_DIR%\"
 
-Write-Host "JavaFX downloaded successfully!"
+del /f /q "%TEMP_FILE%"
+rmdir /s /q "%EXTRACT_TEMP%"
+
+echo JavaFX downloaded successfully!
