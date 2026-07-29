@@ -96,6 +96,6 @@ if [[ -d "../generated" ]] ; then
 fi
 mkdir ../generated
 cd temp
-zip -r ../../generated/VocabularyHelper.zip .
+zip -r ../../generated/release-linux.zip .
 
 echo "Done!"
