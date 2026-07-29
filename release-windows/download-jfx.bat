@@ -1,8 +1,8 @@
-set "URL="https://download.java.net/java/GA/javafx25.0.2/1ccc8ce474414c94ade008f8833286e8/4/openjfx-25.0.2_windows-x64_bin-sdk.zip"
-set "INSTALL_DIR="jfx-windows"
+set "URL=https://download.java.net/java/GA/javafx25.0.2/1ccc8ce474414c94ade008f8833286e8/4/openjfx-25.0.2_windows-x64_bin-sdk.zip"
+set "INSTALL_DIR=jfx-windows"
 
-set "TEMP_FILE="%TEMP%\openjfx.zip"
-set "EXTRACT_TEMP="%TEMP%\javafx_extracted"
+set "TEMP_FILE=%TEMP%\openjfx.zip"
+set "EXTRACT_TEMP=%TEMP%\javafx_extracted"
 
 if not exist "%INSTALL_DIR%" mkdir "%INSTALL_DIR%"
 if exist "%EXTRACT_TEMP%" rmdir /s /q "%EXTRACT_TEMP%"
