@@ -38,7 +38,7 @@ jobs:
         working-directory: release-windows
         shell: powershell
         run: |
-          .\generate-release.bat "$pwd\..\jfx-windows\" "$env:JAVA_HOME"
+          .\make-release.bat "..\jfx-windows\" "$env:JAVA_HOME"
 
       - name: Upload Windows asset to GitHub Release
         uses: softprops/action-gh-release@v2
