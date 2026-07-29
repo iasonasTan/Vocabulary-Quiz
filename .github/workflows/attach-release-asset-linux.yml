@@ -1,4 +1,3 @@
-# Run this workflow when a release is published (change types to include created/draft as you prefer)
 name: Build & attach release assets for Linux
 
 on:
@@ -6,16 +5,17 @@ on:
     types: [published]
 
 permissions:
-  contents: write   # required to upload release assets
+  contents: write
 
 jobs:
-  release-windows:
-    runs-on: windows-latest
+  release-linux:
+    name: Linux release asset
+    runs-on: ubuntu-latest
     permissions:
       contents: write
 
     steps:
-      - name: Checkout repository
+      - name: Checkout
         uses: actions/checkout@v4
 
       - name: Set up JDK 25
@@ -24,19 +24,25 @@ jobs:
           distribution: 'temurin'
           java-version: '25'
 
+      - name: Assemble app
+        run: |
+          ./gradlew assemble
+
       - name: Download JavaFX
-        working-directory: ./release-windows
         run: |
-          .\download-jfx.bat
+          chmod +x release-linux/download-jfx.sh
+          cd release-linux/
+          ./download-jfx.sh
 
-      - name: Run Windows release script
-        working-directory: ./release-windows
+      - name: Run Linux release script
         run: |
-          .\generate-release.bat "$pwd\..\jfx-windows\" "$env:JAVA_HOME"
+          chmod +x release-linux/make-release.sh
+          cd release-linux/
+          ./make-release.sh "$(pwd)/jfx-linux/" $JAVA_HOME
 
-      - name: Upload Windows asset to GitHub Release
+      - name: Upload Linux asset to GitHub Release
         uses: softprops/action-gh-release@v2
         with:
-          files: generated/Vocabulary-Helper-Windows.zip
+          files: generated/Vocabulary-Helepr-Linux.zip
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
