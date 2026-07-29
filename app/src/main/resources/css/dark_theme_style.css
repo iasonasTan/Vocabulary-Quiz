@@ -335,7 +335,7 @@
     -fx-background-radius: 0;
     -fx-border-width: 0;
     border-width: 0;
-    -fx-background-radius: 0;
+    /*-fx-background-radius: 0;*/
     -fx-background-color: #1A1A1A;
     background-color: #1A1A1A;
 }

@@ -38,7 +38,7 @@ public class App extends Application implements Context {
     @Override
     public void start(Stage stage) {
         mStage = stage;
-        Configuration.init("Pairper");
+        Configuration.init("Vocabulary-Helper");
 
         registerReceiver(new Receiver());
 
@@ -51,7 +51,7 @@ public class App extends Application implements Context {
             mStage.getIcons().add(new Image(inputStream));
         } catch (IOException | NullPointerException e) {
             JeLib.console().error("Cannot load window icon.");
-            e.printStackTrace();
+            JeLib.console().exception(e);
         }
         mStage.show();
 
@@ -64,16 +64,17 @@ public class App extends Application implements Context {
         if(!versionChecker.isUpToDate()) {
             MessageWindow messageWindow = new MessageWindow(
                     "An update is available!",
-                    mStage,
+                    getRootStage(),
                     "An update is available!",
                     "Press the button below to download the latest version."
             );
             messageWindow.addAction("Go to download page", window -> {
-                    window.closeWindow();
+                    window.close();
                     getHostServices().showDocument(RELEASES_URL);
             });
-            messageWindow.addAction("Not now", MessageWindow::closeWindow);
-            messageWindow.showWindow();
+            messageWindow.addAction("Not now", MessageWindow::close);
+            boolean darkTheme = Configuration.loadBundle(SETTING_THEME_PATH).getBoolean(DARK_THEME, false);
+            messageWindow.showWindow(darkTheme);
         }
     }
 
@@ -84,7 +85,7 @@ public class App extends Application implements Context {
         final Bundle bundle = Configuration.loadBundle(SETTING_THEME_PATH);
         final boolean darkTheme = bundle.getBoolean(DARK_THEME, false);
 
-        final URL url = getClass().getResource(darkTheme ? "/style/dark_theme_style.css" : "/style/light_theme_style.css");
+        final URL url = getClass().getResource(darkTheme ? "/css/dark_theme_style.css" : "/css/light_theme_style.css");
         JeLib.console().log("Showing new scene. Style URL: " + url);
 
         Parent scene = Context.loadFXML(
@@ -94,6 +95,7 @@ public class App extends Application implements Context {
         );
 
         Scene newScene = new Scene(scene, STAGE_WIDTH, STAGE_HEIGHT);
+        newScene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/css/style.css")).toExternalForm());
 
         mStage.setScene(newScene);
 

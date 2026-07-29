@@ -13,6 +13,7 @@ import javafx.scene.layout.VBox;
 
 import java.util.Optional;
 
+@SuppressWarnings("unused")
 public final class QuizController extends VBox {
     @FXML
     public Label questionLabel;

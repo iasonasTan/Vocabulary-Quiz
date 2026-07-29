@@ -1,0 +1,8 @@
+.title {
+    -fx-font-weight: bold;
+}
+
+* {
+    -fx-font-size: larger;
+    -fx-font-family: "Arial";
+}

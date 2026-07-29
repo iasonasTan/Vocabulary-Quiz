@@ -1,11 +1,11 @@
 module App {
     requires JeJFX;
+    requires JeLib.core;
+    requires JeLib.io;
 
     requires javafx.fxml;
     requires javafx.graphics;
     requires javafx.controls;
-    requires JeLib.core;
-    requires JeLib.io;
 
     exports org.vocab;
     exports org.vocab.controller;

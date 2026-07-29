@@ -3,27 +3,32 @@ package org.vocab.controller;
 import com.je.core.JeLib;
 import com.je.core.util.Bundle;
 import com.je.io.configuration.Configuration;
+
 import com.jjfx.context.Context;
 import com.jjfx.message.Message;
 import com.jjfx.utils.MessageWindow;
 
-import javafx.application.Platform;
+import javafx.fxml.FXML;
 import javafx.scene.Scene;
-import org.vocab.App;
-import org.vocab.vocab.Vocabulary;
-import org.vocab.vocab.VocabFileLoader;
-
+import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 
-import java.io.*;
-import java.net.URL;
+import org.vocab.vocab.VocabFileLoader;
+import org.vocab.vocab.Vocabulary;
+
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 
-import javafx.fxml.FXML;
-import javafx.scene.control.*;
-import javafx.scene.layout.VBox;
+import static org.vocab.App.DARK_THEME;
+import static org.vocab.App.SETTING_THEME_PATH;
 
+@SuppressWarnings("unused")
 public class MainController extends VBox {
     private final Vocabulary vocabulary = new Vocabulary();
 
@@ -59,10 +64,11 @@ public class MainController extends VBox {
                     "You must add at least 3 pairs to start the quiz."
             );
             messageWindow.addAction("Ok", mw -> {
-                mw.closeWindow();
+                mw.close();
                 startQuizButton.setDisable(false);
             });
-            messageWindow.showWindow();
+            boolean darkTheme = Configuration.loadBundle(SETTING_THEME_PATH).getBoolean(DARK_THEME, false);
+            messageWindow.showWindow(darkTheme);
         }
     }
 
@@ -82,8 +88,9 @@ public class MainController extends VBox {
                     context.getRootStage(),
                     "Could not find file.",
                     "The file you entered does not exist. Double-Check the file path.");
-            messageWindow.addAction("Ok", MessageWindow::closeWindow);
-            messageWindow.showWindow();
+            messageWindow.addAction("Ok", MessageWindow::close);
+            boolean darkTheme = Configuration.loadBundle(SETTING_THEME_PATH).getBoolean(DARK_THEME, false);
+            messageWindow.showWindow(darkTheme);
             JeLib.console().warn("File couldn't be loaded.");
         }
     }
@@ -101,24 +108,25 @@ public class MainController extends VBox {
     }
 
     //Lets the user manually choose between light and dark theme
-    //Get's called when the checkbox changes
+    //Gets called when the checkbox changes
     @FXML
     public void toggleDarkTheme(){
         Scene scene = darkThemeCheckbox.getScene();
         final boolean darkTheme = darkThemeCheckbox.isSelected();
 
-        Bundle bundle = Bundle.builder().put(App.DARK_THEME, darkTheme).build();
-        Configuration.storeBundle(App.SETTING_THEME_PATH, bundle);
+        Bundle bundle = Bundle.builder().put(DARK_THEME, darkTheme).build();
+        Configuration.storeBundle(SETTING_THEME_PATH, bundle);
 
         JeLib.console().log("Changing style in MainController: darkTheme = " + darkTheme);
 
         scene.getRoot().getStylesheets().clear();
         if(darkTheme) {
-            String style = Objects.requireNonNull(getClass().getResource("/style/dark_theme_style.css")).toExternalForm();
+            String style = Objects.requireNonNull(getClass().getResource("/css/dark_theme_style.css")).toExternalForm();
             scene.getRoot().getStylesheets().add(style);
         } else {
             scene.getRoot().setStyle("");
         }
+        scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/css/style.css")).toExternalForm());
 
         scene.getRoot().applyCss();
         scene.getRoot().layout();
