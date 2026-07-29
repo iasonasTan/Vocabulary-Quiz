@@ -1,0 +1,51 @@
+# Run this workflow when a release is published (change types to include created/draft as you prefer)
+name: Build & attach release assets
+
+on:
+  release:
+    types: [published]
+
+permissions:
+  contents: write   # required to upload release assets
+
+jobs:
+  linux:
+    name: Linux release asset
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Run Linux release script
+        run: |
+          chmod +x release-linux/make-release.sh
+          ./release-linux/make-release.sh
+
+      - name: Upload Linux asset to GitHub Release
+        uses: actions/upload-release-asset@v1
+        with:
+          upload_url: ${{ github.event.release.upload_url }}
+          asset_path: ./generated/release-linux.zip
+          asset_name: Vocabulary-Quiz--Linux.zip
+          asset_content_type: application/zip
+
+  windows:
+    name: Windows release asset
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Run Windows release script
+        shell: cmd
+        run: |
+          rem adjust path if needed
+          release-windows\make-release.bat
+
+      - name: Upload Windows asset to GitHub Release
+        uses: actions/upload-release-asset@v1
+        with:
+          upload_url: ${{ github.event.release.upload_url }}
+          asset_path: ./generated/release-windows.zip
+          asset_name: Vocabulary-Quiz-Windows.zip
+          asset_content_type: application/zip
