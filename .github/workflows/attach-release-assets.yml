@@ -16,10 +16,15 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Download JavaFX
+        run: |
+          chmod +x release-linux/download-jfx.sh
+          ./release-linux/download-jfx.sh
+
       - name: Run Linux release script
         run: |
           chmod +x release-linux/make-release.sh
-          ./release-linux/make-release.sh
+          ./release-linux/make-release.sh "$(pwd)/jfx-linux/" $JAVA_HOME
 
       - name: Upload Linux asset to GitHub Release
         uses: actions/upload-release-asset@v1
@@ -36,11 +41,15 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Download JavaFX
+        run: |
+          release-windows\download-jfx.bat
+
       - name: Run Windows release script
         shell: cmd
         run: |
           rem adjust path if needed
-          release-windows\make-release.bat
+          .\release-windows\make-release.ps1 "$pwd\jfx-windows\" $env:JAVA_HOME
 
       - name: Upload Windows asset to GitHub Release
         uses: actions/upload-release-asset@v1
