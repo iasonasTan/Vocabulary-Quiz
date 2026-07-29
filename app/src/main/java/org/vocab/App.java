@@ -1,5 +1,6 @@
 package org.vocab;
 
+import com.je.core.Console;
 import com.je.core.JeLib;
 import com.je.core.util.Bundle;
 import com.je.io.configuration.Configuration;
@@ -40,6 +41,13 @@ public class App extends Application implements Context {
     public void start(Stage stage) {
         mStage = stage;
         Configuration.init("Vocabulary-Helper");
+
+        // DISABLE CONSOLE FOR PRODUCTION
+        boolean enableConsole = false;
+        JeLib.console().setEnabled(Console.Type.ERROR, enableConsole);
+        JeLib.console().setEnabled(Console.Type.WARNING, enableConsole);
+        JeLib.console().setEnabled(Console.Type.INFO, enableConsole);
+        JeLib.console().setEnabled(Console.Type.EXCEPTION, enableConsole);
 
         registerReceiver(new Receiver());
 
