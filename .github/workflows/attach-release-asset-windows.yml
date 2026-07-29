@@ -36,6 +36,7 @@ jobs:
 
       - name: Run Windows release script
         working-directory: release-windows
+        shell: powershell
         run: |
           .\generate-release.bat "$pwd\..\jfx-windows\" "$env:JAVA_HOME"
 
