@@ -28,7 +28,7 @@ echo "[2/7] Generating a runtime."
   --strip-debug \
   --no-man-pages \
   --no-header-files \
-  --compress=9 \
+  --compress=zip-9 \
   --output "temp/runtime"
 
 echo "[3/7] Copying libraries."
