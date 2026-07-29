@@ -16,6 +16,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Check versions
+        run: |
+          java -version
+
       - name: Download JavaFX
         run: |
           chmod +x release-linux/download-jfx.sh
