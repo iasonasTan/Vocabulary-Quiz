@@ -1,0 +1,40 @@
+name: Build & attach Jar
+
+on:
+  release:
+    types: [published]
+
+permissions:
+  contents: write
+
+jobs:
+  release-linux:
+    name: Jar release asset
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 25
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '25'
+
+      - name: Assemble app
+        run: |
+          ./gradlew assemble
+
+      - name: Rename Jar
+        run: |
+          cp ./app/build/libs/app.jar ./generated/Vocabulary-Quiz-Linux.jar
+
+      - name: Upload Zipped Jars asset to GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: generated/Vocabulary-Quiz-Linux.jar
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
