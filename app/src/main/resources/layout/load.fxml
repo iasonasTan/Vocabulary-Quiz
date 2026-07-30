@@ -2,6 +2,8 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.control.*?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
 
 <VBox
     spacing="20"
@@ -26,16 +28,23 @@
             fx:id="darkThemeCheckbox"
             onAction="#toggleDarkTheme" />
 
-        <CheckBox
-            styleClass="checkbox"
-            text="Reverse"
-            fx:id="reverseOrderCheckbox"
-            onAction="#reverseOrder" />
+        <HBox>
+            <CheckBox
+                styleClass="checkbox"
+                text="Reverse"
+                fx:id="reverseOrderCheckbox"
+                onAction="#reverseOrder" />
+
+            <Button
+                styleClass="hintButton"
+                text="?"
+                onAction="#showReverseOrderHint" />
+        </HBox>
     </HBox>
 
     <HBox
         alignment="CENTER"
-        spacing="10">
+        spacing="20">
 
         <VBox
             styleClass="subdiv"
@@ -46,14 +55,18 @@
                 promptText="Enter [word=word_translation]"
                 fx:id="wordPairInput"/>
 
-            <Button
-                styleClass="button"
-                text="Add word"
-                onAction="#addWord"/>
-        </VBox>
+            <HBox spacing="5" alignment="TOP_LEFT">
+                <Button
+                    styleClass="button"
+                    text="Add word"
+                    onAction="#addWord"/>
 
-        <Label
-            text="OR"/>
+                <Button
+                    styleClass="hintButton"
+                    text="?"
+                    onAction="#showManualPairAddingHints" />
+            </HBox>
+        </VBox>
 
         <VBox
             styleClass="subdiv"
@@ -71,13 +84,20 @@
                    styleClass="button"
                    text="Browse..."
                    onAction="#browseFile"/>  
-            </HBox>       
+            </HBox>
 
-            <!--Loads word pairs from file to the current vocabulary-->
-            <Button
-                styleClass="button"
-                text="Load from file"
-                onAction="#loadFromFile"/>
+            <HBox spacing="5" alignment="TOP_RIGHT">
+                <Button
+                    styleClass="hintButton"
+                    text="?"
+                    onAction="#showFileLoadingHints" />
+
+                <!--Loads word pairs from file to the current vocabulary-->
+                <Button
+                    styleClass="button"
+                    text="Load from file"
+                    onAction="#loadFromFile"/>
+            </HBox>
         </VBox>
     </HBox>
 

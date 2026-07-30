@@ -8,6 +8,7 @@ import com.jjfx.message.Message;
 import com.jjfx.utils.MessageWindow;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Dimension2D;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
@@ -185,5 +186,41 @@ public class LoadController extends VBox implements Initializable {
     @FXML
     private void reverseOrder() {
         vocabulary.setReverse(reverseOrderCheckbox.isSelected());
+    }
+
+    @FXML
+    private void showReverseOrderHint() {
+        MessageWindow messageWindow = new MessageWindow(
+                "Vocabulary Quiz - Hint",
+                context.getRootStage(),
+                "Reverse Order",
+                "Shows loaded pairs in reverse order.\nYou can change this later."
+        ).addAction("OK", MessageWindow::close);
+        MessageWindowShower.showThemedMessageWindow(messageWindow);
+    }
+
+    @FXML
+    private void showManualPairAddingHints() {
+        MessageWindow messageWindow = new MessageWindow("Vocabulary Quiz - Hint",
+                context.getRootStage(),
+                "Add pair manually",
+                "Add a pair you typed above manually.\nType key=value and press the button.")
+                .addAction("OK", MessageWindow::close);
+        MessageWindowShower.showThemedMessageWindow(messageWindow);
+    }
+
+    @FXML
+    private void showFileLoadingHints() {
+        MessageWindow messageWindow = new MessageWindow("Vocabulary Quiz - Hint",
+                context.getRootStage(),
+                "Load words from file",
+                "Loads words from a file.\nFormat of file:\nkey1=value1\nkey2=value2\n...\nYou can choose a file by clicking 'Browse'")
+                .setDimension(new Dimension2D(350, 300))
+                .addAction("OK", MessageWindow::close);
+        MessageWindowShower.showThemedMessageWindow(messageWindow);
+
+        // TODO: Should be removed after library JeJavaFXUtils gets updated.
+        messageWindow.setWidth(350);
+        messageWindow.setHeight(300);
     }
 }

@@ -6,3 +6,9 @@
     -fx-font-size: larger;
     -fx-font-family: "Arial";
 }
+
+.hintButton {
+    -fx-font-size: 12px;
+    -fx-padding: 2px 6px;
+    -fx-line-height: 1;
+}
