@@ -1,8 +1,12 @@
 package org.vocab.controller;
 
+import com.je.core.JeLib;
+import com.je.io.configuration.Configuration;
 import com.jjfx.context.Context;
 import com.jjfx.message.Message;
 import com.jjfx.receiver.MessageReceiver;
+import com.jjfx.utils.MessageWindow;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -11,12 +15,17 @@ import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.VBox;
+import org.vocab.App;
+import org.vocab.util.MWUtils;
+import org.vocab.vocab.AppStateIO;
 import org.vocab.vocab.PairAndAnswers;
 import org.vocab.vocab.Vocabulary;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.net.URL;
-import java.util.Optional;
-import java.util.ResourceBundle;
+import java.util.*;
 
 @SuppressWarnings("unused")
 public final class QuizController extends VBox implements Initializable {
@@ -112,6 +121,42 @@ public final class QuizController extends VBox implements Initializable {
      */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+    }
+
+    @FXML
+    private void save() {
+        Calendar calendar = Calendar.getInstance(Locale.getDefault());
+        String fileName = String.format(
+                App.SAVED_STATES_FILE_FORMAT,
+                calendar.get(Calendar.DAY_OF_MONTH),
+                calendar.get(Calendar.MONTH),
+                calendar.get(Calendar.YEAR)
+        );
+        String absPath = new File(App.SAVED_STATES_DIR_PATH, fileName).getPath();
+        File file = Configuration.createConfigFile(absPath).toFile();
+        try {
+            AppStateIO.write(context, new FileOutputStream(file), vocabulary);
+        } catch (FileNotFoundException e) {
+            JeLib.console().exception(e);
+            MessageWindow messageWindow = new MessageWindow(
+                    "Vocabulary Quiz - Error",
+                    context.getRootStage(),
+                    "Could not store state.",
+                    "An error occurred while trying to save the current app state. Please try again."
+            );
+            messageWindow.addAction("Ok", MessageWindow::close);
+            MWUtils.showThemed(messageWindow);
+        }
+    }
+
+    @FXML
+    private void explainSave() {
+        MessageWindow messageWindow = new MessageWindow("Vocabulary Quiz - Hint",
+                context.getRootStage(),
+                "Save app state.",
+                "Save the current words and scores.\nYou will be able to load them again in home screen.")
+                .addAction("OK", MessageWindow::close);
+        MWUtils.showThemed(messageWindow);
     }
 
     private final class VocabularyInitializer implements MessageReceiver {

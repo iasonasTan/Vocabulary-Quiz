@@ -12,7 +12,7 @@
     xmlns:fx="http://javafx.com/fxml">
 
     <Label
-        styleClass="title"
+        styleClass="largeTitle"
         text="Vocabulary Helper"/>
 
     <Label
@@ -46,15 +46,29 @@
         spacing="10">
 
         <Button
-                styleClass="button"
-                text="Back"
-                onAction="#back"/>
+            styleClass="button"
+            text="Back"
+            onAction="#back"/>
 
         <CheckBox
             fx:id="reverseCheckbox"
             text="Reverse"
             styleClass="checkbox"
             onAction="#reverseOrder" />
+
+        <HBox
+            spacing="5">
+
+            <Button
+                text="Save"
+                styleClass="button"
+                onAction="#save" />
+
+            <Button
+                text="?"
+                styleClass="hintButton"
+                onAction="#explainSave" />
+        </HBox>
     </HBox>
 
 </VBox>

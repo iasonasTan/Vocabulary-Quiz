@@ -9,3 +9,11 @@
     -fx-background: #ffffff;
     -fx-control-inner-background: #ffffff;
 }
+
+.je-container {
+    -fx-background-color: #ffffff;
+    background-color: #ffffff;
+
+    -fx-text-fill: #262626;
+    -fx-highlight-fill: #2f2f2f;
+}

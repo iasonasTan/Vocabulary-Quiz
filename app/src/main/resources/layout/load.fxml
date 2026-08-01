@@ -14,7 +14,7 @@
 
     <Label
         fx:id="titleLabel"
-        styleClass="title"
+        styleClass="largeTitle"
         text="Vocabulary Helper"/>
 
     <!--Checkbox to enable/disable the dark theme-->
@@ -55,7 +55,10 @@
                 promptText="Enter [word=word_translation]"
                 fx:id="wordPairInput"/>
 
-            <HBox spacing="5" alignment="TOP_LEFT">
+            <HBox
+                spacing="5"
+                alignment="TOP_LEFT">
+
                 <Button
                     styleClass="button"
                     text="Add word"
@@ -73,7 +76,8 @@
             spacing="10"
             alignment="CENTER_RIGHT">
 
-            <HBox spacing="10">
+            <HBox
+                spacing="10">
 
                <TextField
                    styleClass="input"
@@ -86,7 +90,10 @@
                    onAction="#browseFile"/>  
             </HBox>
 
-            <HBox spacing="5" alignment="TOP_RIGHT">
+            <HBox
+                spacing="5"
+                alignment="TOP_RIGHT">
+
                 <Button
                     styleClass="hintButton"
                     text="?"
@@ -100,6 +107,33 @@
             </HBox>
         </VBox>
     </HBox>
+
+    <VBox
+        spacing="10">
+
+        <Label
+            styleClass="title"
+            text="Saved states:"/>
+
+        <ScrollPane
+                styleClass="je-loadButtonsPane"
+                prefWidth="500"
+                prefHeight="250"
+                maxHeight="300"
+                vbarPolicy="AS_NEEDED"
+                VBox.vgrow="ALWAYS"
+                fitToHeight="false">
+
+            <content>
+                <VBox
+                        minWidth="480"
+                        minHeight="300"
+                        fx:id="loadButtons"
+                        spacing="10"
+                        styleClass="je-container" />
+            </content>
+        </ScrollPane>
+    </VBox>
 
     <HBox
         spacing="10">

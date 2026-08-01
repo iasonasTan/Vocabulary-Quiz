@@ -4,6 +4,8 @@
 *   Website: https://www.antoniopelusi.com
 *   Source code: https://github.com/antoniopelusi/JavaFX-Dark-Theme
 *
+*   This file is modified by Jason Tan.
+*
 */
 
 .root{
@@ -11,6 +13,13 @@
     background-color: #2D2D30;
 }
 
+.je-container {
+    -fx-background-color: #2D2D30;
+    background-color: #2D2D30;
+
+    -fx-text-fill: #AFB1B3;
+    -fx-highlight-fill: #4e4e4e;
+}
 
 /* Label */
 .label{

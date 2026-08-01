@@ -14,7 +14,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.CheckBox;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
-import org.vocab.util.MessageWindowShower;
+import org.vocab.util.MWUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -26,6 +26,12 @@ import java.util.Objects;
 public class App extends Application implements Context {
     public static final String SETTING_THEME_PATH = "dark_theme.dat";
     public static final String DARK_THEME = "org.vocab.settings.darkTheme";
+
+    public static final String SAVED_STATES_DIR_PATH = "saved_states";
+    public static final String SAVED_STATES_FILE_FORMAT = "state-%s-%s-%s.dat"; // only one dot should be here
+    public static final String SAVED_STATES_FILE_EXTENSION=SAVED_STATES_FILE_FORMAT.substring(
+            SAVED_STATES_FILE_FORMAT.indexOf(".")
+    );
 
     public static final int STAGE_WIDTH  = 800;
     public static final int STAGE_HEIGHT = 600;
@@ -40,10 +46,10 @@ public class App extends Application implements Context {
     @Override
     public void start(Stage stage) {
         mStage = stage;
-        Configuration.init("Vocabulary-Helper");
+        Configuration.init("Vocabulary-Quiz");
 
         // DISABLE CONSOLE FOR PRODUCTION
-        boolean enableConsole = false;
+        boolean enableConsole = true;
         JeLib.console().setEnabled(Console.Type.ERROR, enableConsole);
         JeLib.console().setEnabled(Console.Type.WARNING, enableConsole);
         JeLib.console().setEnabled(Console.Type.INFO, enableConsole);
@@ -82,7 +88,7 @@ public class App extends Application implements Context {
                     getHostServices().showDocument(RELEASES_URL);
             });
             messageWindow.addAction("Not now", MessageWindow::close);
-            MessageWindowShower.showThemedMessageWindow(messageWindow);
+            MWUtils.showThemed(messageWindow);
         }
     }
 

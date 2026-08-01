@@ -31,22 +31,20 @@ public final class Vocabulary {
     }
 
     public Vocabulary(String data) throws ArrayIndexOutOfBoundsException {
-        String[] pairs = data.split(","); // Get pairs
-        for(String unsplitPair: pairs) {
-            if(!unsplitPair.contains("=")) {
-                continue;
-            }
-            add(unsplitPair);
-        }
+        loadString(data);
     }
 
-    public void add(String unsplit) throws ArrayIndexOutOfBoundsException {
-        String[] split = unsplit.strip().split("=");
-        add(split[0], split[1]);
+    public void add(String unsplit) throws ArrayIndexOutOfBoundsException, NumberFormatException {
+        String[] split = unsplit.strip().split("[=:]");
+        add(split[0], split[1], Integer.parseInt(split[2]));
     }
 
     public void add(String key, String value) {
-        mPairs.add(new Pair(key, value));
+        mPairs.add(new Pair(key.strip(), value.strip()));
+    }
+
+    public void add(String key, String value, int learned) {
+        mPairs.add(new Pair(key.strip(), value.strip(), learned));
     }
 
     /**
@@ -90,6 +88,17 @@ public final class Vocabulary {
         return Pair.sReverse;
     }
 
+    public void loadString(String data) throws ArrayIndexOutOfBoundsException {
+        String[] pairs = data.split(","); // Get pairs
+        for(String unsplitPair: pairs) {
+            if(!unsplitPair.contains("=") || !unsplitPair.contains(":")) {
+                continue;
+            }
+            JeLib.console().log("Adding pair: "+unsplitPair);
+            add(unsplitPair);
+        }
+    }
+
     /**
      * Holds a pair of words, and it's learned value.
      */
@@ -109,11 +118,16 @@ public final class Vocabulary {
          * The higher this it, the better the user knows the value,
          * the lower this is, the less the user knows the value.
          */
-        private int learned = 0;
+        private int learned;
 
-        public Pair(String key, String value) {
+        public Pair(String key, String value, int learned) {
             this.key = key;
             this.value = value;
+            this.learned = learned;
+        }
+
+        public Pair(String key, String value) {
+            this(key, value, 0);
         }
 
         /**
@@ -152,7 +166,7 @@ public final class Vocabulary {
 
         @Override
         public String toString() {
-            return key+"="+value;
+            return key+"="+value+":"+learned;
         }
     }
 
