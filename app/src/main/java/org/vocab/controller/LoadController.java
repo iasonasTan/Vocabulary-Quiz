@@ -32,7 +32,6 @@ import org.vocab.vocab.Vocabulary;
 import java.io.*;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
 import java.util.Objects;
 import java.util.ResourceBundle;
 import java.util.function.Supplier;
@@ -191,13 +190,7 @@ public class LoadController extends VBox implements Initializable {
     private void loadSavedStates(boolean darkTheme) {
         try {
             JeLib.console().log("Loading saved states...");
-            // TODO: Waiting for JeLib.io:Configuration.createConfigDir();
-            File file = new File(App.SAVED_STATES_DIR_PATH);
-            File path = Configuration.createConfigFile(file.getPath()).toFile();
-            // noinspection all
-            path.delete();
-            // noinspection all
-            path.mkdir();
+            File path = Configuration.createConfigDir(App.SAVED_STATES_DIR_PATH).toFile();
             File[] files = path.listFiles();
             if(files == null)
                 return;
