@@ -5,11 +5,12 @@ import com.je.io.configuration.Configuration;
 import com.jjfx.context.Context;
 import com.jjfx.utils.ExceptionWindow;
 import com.jjfx.utils.MessageWindow;
+import com.jjfx.utils.Window;
 import javafx.application.Platform;
 import org.vocab.App;
 
 public final class Utils {
-    public static void showThemed(MessageWindow messageWindow) {
+    public static void showThemed(Window messageWindow) {
         boolean darkTheme = Configuration
                 .loadBundle(App.SETTING_THEME_PATH)
                 .getBoolean(App.DARK_THEME, false);

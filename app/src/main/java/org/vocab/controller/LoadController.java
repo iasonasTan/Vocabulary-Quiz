@@ -5,6 +5,7 @@ import com.je.core.util.Bundle;
 import com.je.io.configuration.Configuration;
 import com.jjfx.context.Context;
 import com.jjfx.message.Message;
+import com.jjfx.utils.InputWindow;
 import com.jjfx.utils.MessageWindow;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -34,6 +35,7 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 import java.util.ResourceBundle;
+import java.util.function.Consumer;
 
 import static org.vocab.App.DARK_THEME;
 import static org.vocab.App.SETTING_THEME_PATH;
@@ -86,7 +88,9 @@ public class LoadController extends VBox implements Initializable {
         return button;
     }
 
-    private void addGui(boolean darkTheme, File[] files) {
+    private void addGui(File[] files) {
+        boolean darkTheme = Configuration.loadBundle(SETTING_THEME_PATH)
+                .getBoolean(DARK_THEME, false);
         boolean index = true;
         String[] cssLight = new String[]{
                 "-fx-background-color: #d1d1d1",
@@ -143,7 +147,7 @@ public class LoadController extends VBox implements Initializable {
                     case RENAME: rename(); break;
                     case LOAD: load(); break;
                 }
-                loadSavedStates(Configuration.loadBundle(SETTING_THEME_PATH).getBoolean(DARK_THEME, false));
+                loadSavedStates();
             } catch (IOException ioe) {
                 Utils.handleException(context, ioe);
             }
@@ -155,14 +159,24 @@ public class LoadController extends VBox implements Initializable {
         }
 
         private void rename() {
-            // TODO: Waiting for JeJavaFXUtils:InputWindow
-            String newName = "unknown";
+            final Consumer<String> consumer = newName -> {
+                String oldName = mFile.getName();
+                String path = mFile.getAbsolutePath().replace(oldName, "");
 
-            String oldName = mFile.getName();
-            String path = mFile.getAbsolutePath().replace(oldName, "");
+                boolean result = mFile.renameTo(new File(path, newName));
+                JeLib.console().log("File '"+ mFile +"' was " + (result?"":"not") + " renamed!");
 
-            boolean result = mFile.renameTo(new File(path, newName));
-            JeLib.console().log("File '"+ mFile +"' was " + (result?"":"not") + " renamed!");
+                loadSavedStates();
+            };
+            InputWindow inputWindow = new InputWindow(
+                    "Vocabulary Quiz - Rename Saved State",
+                    "Enter the new name: ",
+                    context.getRootStage(),
+                    "name...",
+                    consumer
+            );
+            inputWindow.addActionOk();
+            Utils.showThemed(inputWindow);
         }
 
         private void delete() {
@@ -179,7 +193,7 @@ public class LoadController extends VBox implements Initializable {
         }
     }
 
-    private void loadSavedStates(boolean darkTheme) {
+    private void loadSavedStates() {
         try {
             JeLib.console().log("Loading saved states...");
             File path = Configuration.createConfigDir(App.SAVED_STATES_DIR_PATH).toFile();
@@ -187,7 +201,7 @@ public class LoadController extends VBox implements Initializable {
             if(files == null)
                 return;
 
-            addGui(darkTheme, files);
+            addGui(files);
         } catch (Exception ioe) {
             Utils.handleException(context, ioe);
         }
@@ -254,7 +268,7 @@ public class LoadController extends VBox implements Initializable {
         Bundle bundle = Bundle.builder().put(DARK_THEME, darkTheme).build();
         Configuration.storeBundle(SETTING_THEME_PATH, bundle);
 
-        loadSavedStates(darkTheme);
+        loadSavedStates();
 
         JeLib.console().log("Changing style in LoadController: darkTheme = " + darkTheme);
 
@@ -302,7 +316,7 @@ public class LoadController extends VBox implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         loadVersion();
-        loadSavedStates(Configuration.loadBundle(SETTING_THEME_PATH).getBoolean(DARK_THEME, false));
+        loadSavedStates();
         reverseOrderCheckbox.setSelected(vocabulary.isReverse());
     }
 
