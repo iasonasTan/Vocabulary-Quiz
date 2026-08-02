@@ -31,11 +31,11 @@ jobs:
       - name: Rename Jar
         run: |
           mkdir -p ./generated
-          cp ./app/build/libs/app.jar ./generated/Vocabulary-Quiz.jar
+          cp ./app/build/libs/app.jar ./generated/Vocabulary-Quiz-Linux.jar
 
       - name: Upload Zipped Jars asset to GitHub Release
         uses: softprops/action-gh-release@v2
         with:
-          files: generated/Vocabulary-Quiz.jar
+          files: generated/Vocabulary-Quiz-Linux.jar
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
