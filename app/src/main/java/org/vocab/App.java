@@ -25,14 +25,14 @@ import java.util.List;
 import java.util.Objects;
 
 public class App extends Application implements Context {
+    // Appearance & Theming
     public static final String SETTING_THEME_PATH = "dark_theme.dat";
     public static final String DARK_THEME = "org.vocab.settings.darkTheme";
-
+    // Saved states & Logic
     public static final String SAVED_STATES_DIR_PATH = "saved_states";
     public static final String SAVED_STATES_FILE_FORMAT = "state-%s-%s-%s-%s.dat";
 
-    public static final int STAGE_WIDTH  = 800;
-    public static final int STAGE_HEIGHT = 600;
+    public static final int STAGE_WIDTH  = 800, STAGE_HEIGHT = 600;
 
     static void main() {
         launch();
@@ -47,7 +47,7 @@ public class App extends Application implements Context {
         Configuration.init("Vocabulary-Quiz");
 
         // DISABLE LOGS FOR PRODUCTION
-        boolean enableConsole = false;
+        boolean enableConsole = true;
         JeLib.console().setEnabled(enableConsole,
                 Console.Type.ERROR, Console.Type.WARNING,
                 Console.Type.INFO, Console.Type.EXCEPTION);

@@ -2,10 +2,12 @@ package org.vocab.controller;
 
 import com.je.core.JeLib;
 import com.je.io.configuration.Configuration;
+
 import com.jjfx.context.Context;
 import com.jjfx.message.Message;
 import com.jjfx.receiver.MessageReceiver;
 import com.jjfx.utils.MessageWindow;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -15,8 +17,10 @@ import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.VBox;
+
 import org.vocab.App;
 import org.vocab.util.Utils;
+import org.vocab.visualizer.VisualizerWindow;
 import org.vocab.vocab.AppStateIO;
 import org.vocab.vocab.PairAndAnswers;
 import org.vocab.vocab.Vocabulary;
@@ -42,10 +46,12 @@ public final class QuizController extends VBox implements Initializable {
     private PairAndAnswers pair;
     private Vocabulary vocabulary;
     private final Context context;
+    private final VisualizerWindow visualizerWindow;
 
     public QuizController(Context context) {
         this.context = context;
         this.context.registerReceiver(new VocabularyInitializer());
+        visualizerWindow = new VisualizerWindow(context);
     }
 
     @FXML
@@ -63,13 +69,17 @@ public final class QuizController extends VBox implements Initializable {
             case KeyCode.NUMPAD3:
                 isAnswer(2);
                 break;
+            case KeyCode.V:
+                visualizerWindow.swap();
+                break;
         }
     }
 
     @FXML
     public void choiceAction(ActionEvent event) {
         String buttonText = ((Button)event.getSource()).getText(); // Get text of the pressed button
-        int startIndex = buttonText.lastIndexOf('['), endIndex = buttonText.lastIndexOf(']');
+        int startIndex = buttonText.lastIndexOf('[')+1; // Index of the letter before the number plus one
+        int endIndex = buttonText.lastIndexOf(']'); // Index of the letter after the number
         String number = buttonText.substring(startIndex, endIndex); // Get number inside brackets [1,2,3]
         isAnswer(Integer.parseInt(number)-1); // Call isAnswer() with parsed string to integer and subtracted by one. int(0,1,2)
     }
@@ -90,6 +100,12 @@ public final class QuizController extends VBox implements Initializable {
     private void nextQuestion() {
         Optional<PairAndAnswers> pairOpt = vocabulary.randomPairAndAnswers();
         pairOpt.ifPresent(this::applyPair);
+
+        Message dataMessage = Message.newBuilder()
+                .setAction("visualizeData")
+                .putExtra("data", vocabulary.toString())
+                .build();
+        context.broadcastMessage(dataMessage);
     }
 
     private void applyPair(PairAndAnswers pair) {
