@@ -30,6 +30,7 @@ jobs:
 
       - name: Rename Jar
         run: |
+          mkdir -p ./generated
           cp ./app/build/libs/app.jar ./generated/Vocabulary-Quiz-Linux.jar
 
       - name: Upload Zipped Jars asset to GitHub Release
