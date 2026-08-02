@@ -15,7 +15,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.CheckBox;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
-import org.vocab.util.MWUtils;
+import org.vocab.util.Utils;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -29,10 +29,7 @@ public class App extends Application implements Context {
     public static final String DARK_THEME = "org.vocab.settings.darkTheme";
 
     public static final String SAVED_STATES_DIR_PATH = "saved_states";
-    public static final String SAVED_STATES_FILE_FORMAT = "state-%s-%s-%s.dat"; // only one dot should be here
-    public static final String SAVED_STATES_FILE_EXTENSION=SAVED_STATES_FILE_FORMAT.substring(
-            SAVED_STATES_FILE_FORMAT.indexOf(".")
-    );
+    public static final String SAVED_STATES_FILE_FORMAT = "state-%s-%s-%s.dat";
 
     public static final int STAGE_WIDTH  = 800;
     public static final int STAGE_HEIGHT = 600;
@@ -51,13 +48,9 @@ public class App extends Application implements Context {
 
         // DISABLE LOGS FOR PRODUCTION
         boolean enableConsole = false;
-        JeLib.console().setEnabled(
-                enableConsole,
-                Console.Type.ERROR,
-                Console.Type.WARNING,
-                Console.Type.INFO,
-                Console.Type.EXCEPTION
-        );
+        JeLib.console().setEnabled(enableConsole,
+                Console.Type.ERROR, Console.Type.WARNING,
+                Console.Type.INFO, Console.Type.EXCEPTION);
 
         registerReceiver(new Receiver());
 
@@ -92,7 +85,7 @@ public class App extends Application implements Context {
                     getHostServices().showDocument(RELEASES_URL);
             });
             messageWindow.addAction("Not now", Disposable::close);
-            MWUtils.showThemed(messageWindow);
+            Utils.showThemed(messageWindow);
         }
     }
 

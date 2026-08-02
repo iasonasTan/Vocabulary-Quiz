@@ -1,12 +1,10 @@
 package org.vocab.controller;
 
-import com.je.core.JeLib;
 import com.je.io.configuration.Configuration;
 import com.jjfx.context.Context;
 import com.jjfx.message.Message;
 import com.jjfx.receiver.MessageReceiver;
 import com.jjfx.utils.MessageWindow;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -16,16 +14,19 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.VBox;
 import org.vocab.App;
-import org.vocab.util.MWUtils;
+import org.vocab.util.Utils;
 import org.vocab.vocab.AppStateIO;
 import org.vocab.vocab.PairAndAnswers;
 import org.vocab.vocab.Vocabulary;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.net.URL;
-import java.util.*;
+import java.util.Calendar;
+import java.util.Locale;
+import java.util.Optional;
+import java.util.ResourceBundle;
 
 @SuppressWarnings("unused")
 public final class QuizController extends VBox implements Initializable {
@@ -135,17 +136,9 @@ public final class QuizController extends VBox implements Initializable {
         String absPath = new File(App.SAVED_STATES_DIR_PATH, fileName).getPath();
         File file = Configuration.createConfigFile(absPath).toFile();
         try {
-            AppStateIO.write(context, new FileOutputStream(file), vocabulary);
-        } catch (FileNotFoundException e) {
-            JeLib.console().exception(e);
-            MessageWindow messageWindow = new MessageWindow(
-                    "Vocabulary Quiz - Error",
-                    context.getRootStage(),
-                    "Could not store state.",
-                    "An error occurred while trying to save the current app state. Please try again."
-            );
-            messageWindow.addActionOk();
-            MWUtils.showThemed(messageWindow);
+            AppStateIO.write(new FileOutputStream(file), vocabulary);
+        } catch (IOException e) {
+            Utils.handleException(context, e);
         }
     }
 
@@ -158,7 +151,7 @@ public final class QuizController extends VBox implements Initializable {
                 "Save the current words and scores.\nYou will be able to load them again in home screen."
         );
         messageWindow.addActionOk();
-        MWUtils.showThemed(messageWindow);
+        Utils.showThemed(messageWindow);
     }
 
     private final class VocabularyInitializer implements MessageReceiver {

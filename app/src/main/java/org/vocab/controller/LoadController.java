@@ -24,7 +24,7 @@ import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import org.vocab.App;
-import org.vocab.util.MWUtils;
+import org.vocab.util.Utils;
 import org.vocab.vocab.AppStateIO;
 import org.vocab.vocab.VocabFileLoader;
 import org.vocab.vocab.Vocabulary;
@@ -145,21 +145,12 @@ public class LoadController extends VBox implements Initializable {
                 }
                 loadSavedStates(Configuration.loadBundle(SETTING_THEME_PATH).getBoolean(DARK_THEME, false));
             } catch (IOException ioe) {
-                JeLib.console().exception(ioe);
-                JeLib.console().error("Could not load state. " + ioe);
-                MessageWindow messageWindow = new MessageWindow(
-                        "Vocabulary Quiz - Error",
-                        context.getRootStage(),
-                        "Cannot load state.",
-                        "An error occurred while trying to load this state. Please try again."
-                );
-                messageWindow.addActionOk();
-                MWUtils.showThemed(messageWindow);
+                Utils.handleException(context, ioe);
             }
         }
 
-        private void load() throws FileNotFoundException {
-            AppStateIO.load(context, new FileInputStream(mFile), vocabulary);
+        private void load() throws IOException {
+            AppStateIO.load(new FileInputStream(mFile), vocabulary);
             startQuiz();
         }
 
@@ -198,16 +189,7 @@ public class LoadController extends VBox implements Initializable {
 
             addGui(darkTheme, files);
         } catch (Exception ioe) {
-            JeLib.console().error("Could not load states.");
-            JeLib.console().exception(ioe);
-            MessageWindow messageWindow = new MessageWindow(
-                    "Vocabulary Quiz - Error",
-                    context.getRootStage(),
-                    "Cannot load states.",
-                    "An error occurred while trying to load saved states. Please try again."
-            );
-            messageWindow.addActionOk();
-            MWUtils.showThemed(messageWindow);
+            Utils.handleException(context, ioe);
         }
     }
 
@@ -231,7 +213,7 @@ public class LoadController extends VBox implements Initializable {
                 mw.close();
                 startQuizButton.setDisable(false);
             });
-            MWUtils.showThemed(messageWindow);
+            Utils.showThemed(messageWindow);
         }
     }
 
@@ -245,16 +227,8 @@ public class LoadController extends VBox implements Initializable {
             VocabFileLoader vfl = new VocabFileLoader(vocabulary);
             vfl.loadVocab(reader);
             filePathInput.setText("");
-        }catch (IOException ioe) {
-            MessageWindow messageWindow = new MessageWindow(
-                    "File not found.",
-                    context.getRootStage(),
-                    "Could not find file.",
-                    "The file you entered does not exist. Double-Check the file path."
-            );
-            messageWindow.addActionOk();
-            MWUtils.showThemed(messageWindow);
-            JeLib.console().warn("File couldn't be loaded.");
+        } catch (IOException ioe) {
+            Utils.handleException(context, ioe);
         }
     }
 
@@ -346,7 +320,7 @@ public class LoadController extends VBox implements Initializable {
                 "Shows loaded pairs in reverse order.\nYou can change this later."
         );
         messageWindow.addActionOk();
-        MWUtils.showThemed(messageWindow);
+        Utils.showThemed(messageWindow);
     }
 
     @FXML
@@ -358,7 +332,7 @@ public class LoadController extends VBox implements Initializable {
                 "Add a pair you typed above manually.\nType key=value and press the button."
         );
         messageWindow.addActionOk();
-        MWUtils.showThemed(messageWindow);
+        Utils.showThemed(messageWindow);
     }
 
     @FXML
@@ -371,6 +345,6 @@ public class LoadController extends VBox implements Initializable {
         );
         messageWindow.setDimension(new Dimension2D(350, 300));
         messageWindow.addActionOk();
-        MWUtils.showThemed(messageWindow);
+        Utils.showThemed(messageWindow);
     }
 }
