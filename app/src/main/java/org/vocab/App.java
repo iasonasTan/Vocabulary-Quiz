@@ -29,7 +29,7 @@ public class App extends Application implements Context {
     public static final String DARK_THEME = "org.vocab.settings.darkTheme";
 
     public static final String SAVED_STATES_DIR_PATH = "saved_states";
-    public static final String SAVED_STATES_FILE_FORMAT = "state-%s-%s-%s.dat";
+    public static final String SAVED_STATES_FILE_FORMAT = "state-%s-%s-%s-%s.dat";
 
     public static final int STAGE_WIDTH  = 800;
     public static final int STAGE_HEIGHT = 600;
@@ -47,7 +47,7 @@ public class App extends Application implements Context {
         Configuration.init("Vocabulary-Quiz");
 
         // DISABLE LOGS FOR PRODUCTION
-        boolean enableConsole = false;
+        boolean enableConsole = true;
         JeLib.console().setEnabled(enableConsole,
                 Console.Type.ERROR, Console.Type.WARNING,
                 Console.Type.INFO, Console.Type.EXCEPTION);
@@ -141,7 +141,8 @@ public class App extends Application implements Context {
         @Override
         public void onReceive(Message message) {
             if(message.getAction().equals("start_quiz")) {
-                startQuiz(message.getBundle().getString("vocabulary"));
+                startQuiz(message.getBundle().getString("vocabulary"),
+                        message.getBundle().getString("savedState"));
             } else if (message.getAction().equals("abort_app")) {
                 mStage.close();
                 System.exit(0);
@@ -150,7 +151,7 @@ public class App extends Application implements Context {
             }
         }
 
-        private void startQuiz(String vocab) {
+        private void startQuiz(String vocab, String savedState) {
             // Show quiz field
             setScene("quiz");
 
@@ -159,6 +160,10 @@ public class App extends Application implements Context {
                 .setAction("initialize_vocabulary")
                 .putExtra("vocabulary", vocab)
                 .build();
+
+            if(savedState != null) {
+                message1.putExtra("savedState", savedState);
+            }
             broadcastMessage(message1);
         }
     }

@@ -155,7 +155,7 @@ public class LoadController extends VBox implements Initializable {
 
         private void load() throws IOException {
             AppStateIO.load(new FileInputStream(mFile), vocabulary);
-            startQuiz();
+            startQuiz(mFile.getAbsolutePath());
         }
 
         private void rename() {
@@ -209,11 +209,18 @@ public class LoadController extends VBox implements Initializable {
 
     @FXML
     public void startQuiz() {
+        startQuiz(null);
+    }
+
+    private void startQuiz(String savedState) {
         if(vocabulary.hasMinimumWords()) {
             Message message = Message.newBuilder()
                     .setAction("start_quiz")
                     .putExtra("vocabulary", vocabulary.toString())
                     .build();
+            if(savedState != null) {
+                message.putExtra("savedState", savedState);
+            }
             context.broadcastMessage(message);
         } else {
             startQuizButton.setDisable(true);

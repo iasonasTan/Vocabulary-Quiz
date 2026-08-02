@@ -1,5 +1,6 @@
 package org.vocab.controller;
 
+import com.je.core.JeLib;
 import com.je.io.configuration.Configuration;
 import com.jjfx.context.Context;
 import com.jjfx.message.Message;
@@ -23,10 +24,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URL;
-import java.util.Calendar;
-import java.util.Locale;
-import java.util.Optional;
-import java.util.ResourceBundle;
+import java.util.*;
 
 @SuppressWarnings("unused")
 public final class QuizController extends VBox implements Initializable {
@@ -39,6 +37,7 @@ public final class QuizController extends VBox implements Initializable {
     @FXML
     public CheckBox reverseCheckbox;
 
+    private String pathToSaveState;
     private PairAndAnswers pair;
     private Vocabulary vocabulary;
     private final Context context;
@@ -126,19 +125,27 @@ public final class QuizController extends VBox implements Initializable {
 
     @FXML
     private void save() {
-        Calendar calendar = Calendar.getInstance(Locale.getDefault());
-        String fileName = String.format(
-                App.SAVED_STATES_FILE_FORMAT,
-                calendar.get(Calendar.DAY_OF_MONTH),
-                calendar.get(Calendar.MONTH),
-                calendar.get(Calendar.YEAR)
-        );
-        String absPath = new File(App.SAVED_STATES_DIR_PATH, fileName).getPath();
-        File file = Configuration.createConfigFile(absPath).toFile();
         try {
-            AppStateIO.write(new FileOutputStream(file), vocabulary);
+            AppStateIO.write(new FileOutputStream(getFile()), vocabulary);
         } catch (IOException e) {
             Utils.handleException(context, e);
+        }
+    }
+
+    private File getFile() {
+        if(pathToSaveState == null) {
+            Calendar calendar = Calendar.getInstance(Locale.getDefault());
+            String fileName = String.format(
+                    App.SAVED_STATES_FILE_FORMAT,
+                    calendar.get(Calendar.DAY_OF_MONTH),
+                    calendar.get(Calendar.MONTH),
+                    calendar.get(Calendar.YEAR),
+                    UUID.randomUUID().toString().substring(0, 4)
+            );
+            String relPath = new File(App.SAVED_STATES_DIR_PATH, fileName).getPath();
+            return Configuration.createConfigFile(relPath).toFile();
+        } else {
+            return new File(pathToSaveState);
         }
     }
 
@@ -158,8 +165,10 @@ public final class QuizController extends VBox implements Initializable {
         @Override
         public void onReceive(Message message) {
             if(message.getAction().equals("initialize_vocabulary")) {
+                JeLib.console().log("Loading vocabulary and path.");
                 vocabulary = new Vocabulary(message.getBundle().getString("vocabulary"));
                 reverseCheckbox.setSelected(vocabulary.isReverse());
+                pathToSaveState = message.getBundle().getString("savedState");
                 nextQuestion();
             }
         }

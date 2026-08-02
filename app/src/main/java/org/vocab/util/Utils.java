@@ -4,7 +4,6 @@ import com.je.core.JeLib;
 import com.je.io.configuration.Configuration;
 import com.jjfx.context.Context;
 import com.jjfx.utils.ExceptionWindow;
-import com.jjfx.utils.MessageWindow;
 import com.jjfx.utils.Window;
 import javafx.application.Platform;
 import org.vocab.App;
