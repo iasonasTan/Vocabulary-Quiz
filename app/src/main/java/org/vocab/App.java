@@ -47,7 +47,7 @@ public class App extends Application implements Context {
         Configuration.init("Vocabulary-Quiz");
 
         // DISABLE LOGS FOR PRODUCTION
-        boolean enableConsole = true;
+        boolean enableConsole = false;
         JeLib.console().setEnabled(enableConsole,
                 Console.Type.ERROR, Console.Type.WARNING,
                 Console.Type.INFO, Console.Type.EXCEPTION);
