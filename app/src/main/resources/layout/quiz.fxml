@@ -26,19 +26,19 @@
         <Button
             text="NULL"
             styleClass="choice"
-            onAction="#choice0action"
+            onAction="#choiceAction"
             fx:id="choice1"/>
         
         <Button
             text="NULL"
             styleClass="choice"
-            onAction="#choice1action"
+            onAction="#choiceAction"
             fx:id="choice2"/>
 
         <Button
             text="NULL"
             styleClass="choice"
-            onAction="#choice2action"
+            onAction="#choiceAction"
             fx:id="choice3"/>
     </HBox>
 

@@ -6,6 +6,7 @@ import com.jjfx.context.Context;
 import com.jjfx.message.Message;
 import com.jjfx.receiver.MessageReceiver;
 import com.jjfx.utils.MessageWindow;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -52,34 +53,29 @@ public final class QuizController extends VBox implements Initializable {
         switch(ke.getCode()) {
             case KeyCode.DIGIT1:
             case KeyCode.NUMPAD1:
-                choice0action();
+                isAnswer(0);
                 break;
             case KeyCode.DIGIT2:
             case KeyCode.NUMPAD2:
-                choice1action();
+                isAnswer(1);
                 break;
             case KeyCode.DIGIT3:
             case KeyCode.NUMPAD3:
-                choice2action();
+                isAnswer(2);
                 break;
         }
     }
 
     @FXML
-    public void choice0action() {
-        if(pair != null && pair.isAnswer(0))
-            nextQuestion();
+    public void choiceAction(ActionEvent event) {
+        String buttonText = ((Button)event.getSource()).getText(); // Get text of the pressed button
+        int startIndex = buttonText.lastIndexOf('['), endIndex = buttonText.lastIndexOf(']');
+        String number = buttonText.substring(startIndex, endIndex); // Get number inside brackets [1,2,3]
+        isAnswer(Integer.parseInt(number)-1); // Call isAnswer() with parsed string to integer and subtracted by one. int(0,1,2)
     }
 
-    @FXML
-    public void choice1action() {
-        if(pair != null && pair.isAnswer(1))
-            nextQuestion();
-    }
-
-    @FXML
-    public void choice2action() {
-        if(pair != null && pair.isAnswer(2))
+    private void isAnswer(int idx) {
+        if(pair != null && pair.isAnswer(idx))
             nextQuestion();
     }
 
@@ -140,7 +136,7 @@ public final class QuizController extends VBox implements Initializable {
                     calendar.get(Calendar.DAY_OF_MONTH),
                     calendar.get(Calendar.MONTH),
                     calendar.get(Calendar.YEAR),
-                    UUID.randomUUID().toString().substring(0, 4)
+                    UUID.randomUUID().toString().substring(0, 5)
             );
             String relPath = new File(App.SAVED_STATES_DIR_PATH, fileName).getPath();
             return Configuration.createConfigFile(relPath).toFile();
