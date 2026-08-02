@@ -7,6 +7,7 @@ import com.je.io.configuration.Configuration;
 import com.jjfx.context.Context;
 import com.jjfx.message.Message;
 import com.jjfx.receiver.MessageReceiver;
+import com.jjfx.utils.Disposable;
 import com.jjfx.utils.MessageWindow;
 import javafx.application.Application;
 import javafx.scene.Parent;
@@ -48,12 +49,15 @@ public class App extends Application implements Context {
         mStage = stage;
         Configuration.init("Vocabulary-Quiz");
 
-        // DISABLE CONSOLE FOR PRODUCTION
-        boolean enableConsole = true;
-        JeLib.console().setEnabled(Console.Type.ERROR, enableConsole);
-        JeLib.console().setEnabled(Console.Type.WARNING, enableConsole);
-        JeLib.console().setEnabled(Console.Type.INFO, enableConsole);
-        JeLib.console().setEnabled(Console.Type.EXCEPTION, enableConsole);
+        // DISABLE LOGS FOR PRODUCTION
+        boolean enableConsole = false;
+        JeLib.console().setEnabled(
+                enableConsole,
+                Console.Type.ERROR,
+                Console.Type.WARNING,
+                Console.Type.INFO,
+                Console.Type.EXCEPTION
+        );
 
         registerReceiver(new Receiver());
 
@@ -87,7 +91,7 @@ public class App extends Application implements Context {
                     window.close();
                     getHostServices().showDocument(RELEASES_URL);
             });
-            messageWindow.addAction("Not now", MessageWindow::close);
+            messageWindow.addAction("Not now", Disposable::close);
             MWUtils.showThemed(messageWindow);
         }
     }

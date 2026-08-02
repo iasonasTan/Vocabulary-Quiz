@@ -14,7 +14,7 @@ public final class AppStateIO {
     private AppStateIO(){}
 
     /**
-     * Writes the vocabulary to a file.
+     * Writes the vocabulary app state to a file.
      * Uses {@link Vocabulary#toString()} transform.
      * @param context      App context used for gui.
      * @param outputStream Where to store the vocabulary.
@@ -34,15 +34,15 @@ public final class AppStateIO {
                     "Cannot write state.",
                     "An error occurred while trying to save this state. Please try again."
             );
-            messageWindow.addAction("Ok", MessageWindow::close);
+            messageWindow.addActionOk();
             MWUtils.showThemed(messageWindow);
         }
     }
 
     /**
-     * Loads the vocabulary from a file.
+     * Loads the vocabulary app state from a file.
      * Uses {@link Vocabulary#toString()} transform.
-     * @param context      App context used for gui.
+     * @param context     App context used for gui.
      * @param inputStream Where to load the vocabulary from.
      */
     public static void load(Context context, InputStream inputStream, Vocabulary vocabulary) {
@@ -68,7 +68,7 @@ public final class AppStateIO {
                     "Cannot load state.",
                     "An error occurred while trying to load this state. Please try again."
             );
-            messageWindow.addAction("Ok", MessageWindow::close);
+            messageWindow.addActionOk();
             MWUtils.showThemed(messageWindow);
         }
     }

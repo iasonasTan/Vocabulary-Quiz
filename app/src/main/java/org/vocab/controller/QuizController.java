@@ -144,18 +144,20 @@ public final class QuizController extends VBox implements Initializable {
                     "Could not store state.",
                     "An error occurred while trying to save the current app state. Please try again."
             );
-            messageWindow.addAction("Ok", MessageWindow::close);
+            messageWindow.addActionOk();
             MWUtils.showThemed(messageWindow);
         }
     }
 
     @FXML
     private void explainSave() {
-        MessageWindow messageWindow = new MessageWindow("Vocabulary Quiz - Hint",
+        MessageWindow messageWindow = new MessageWindow(
+                "Vocabulary Quiz - Hint",
                 context.getRootStage(),
                 "Save app state.",
-                "Save the current words and scores.\nYou will be able to load them again in home screen.")
-                .addAction("OK", MessageWindow::close);
+                "Save the current words and scores.\nYou will be able to load them again in home screen."
+        );
+        messageWindow.addActionOk();
         MWUtils.showThemed(messageWindow);
     }
 

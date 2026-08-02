@@ -34,7 +34,6 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 import java.util.ResourceBundle;
-import java.util.function.Supplier;
 
 import static org.vocab.App.DARK_THEME;
 import static org.vocab.App.SETTING_THEME_PATH;
@@ -89,19 +88,21 @@ public class LoadController extends VBox implements Initializable {
 
     private void addGui(boolean darkTheme, File[] files) {
         boolean index = true;
-        String[] css = new String[]{
+        String[] cssLight = new String[]{
+                "-fx-background-color: #d1d1d1",
+                "-fx-background-color: #ffffff"
+        };
+        String[] cssDark = new String[]{
                 "-fx-background-color: #939393;",
                 "-fx-background-color: #454545;"
         };
 
-        // Simulating file adding:
-        Supplier<String> randomNumbers = () -> String.valueOf((int)(Math.random() * 100));
         loadButtons.getChildren().clear();
         for(File file: files) {
             HBox hbox = new HBox(10);
             hbox.setPadding(new Insets(5, 10, 5, 10));
             // noinspection all : false-positive
-            hbox.setStyle(css[(index = !index) ?0:1]);
+            hbox.setStyle(darkTheme?cssDark[(index = !index) ?0:1]:cssLight[(index = !index) ?0:1]);
 
             Button button = new Button(file.getName());
             Region region = new Region();
@@ -152,7 +153,7 @@ public class LoadController extends VBox implements Initializable {
                         "Cannot load state.",
                         "An error occurred while trying to load this state. Please try again."
                 );
-                messageWindow.addAction("Ok", MessageWindow::close);
+                messageWindow.addActionOk();
                 MWUtils.showThemed(messageWindow);
             }
         }
@@ -205,7 +206,7 @@ public class LoadController extends VBox implements Initializable {
                     "Cannot load states.",
                     "An error occurred while trying to load saved states. Please try again."
             );
-            messageWindow.addAction("Ok", MessageWindow::close);
+            messageWindow.addActionOk();
             MWUtils.showThemed(messageWindow);
         }
     }
@@ -249,8 +250,9 @@ public class LoadController extends VBox implements Initializable {
                     "File not found.",
                     context.getRootStage(),
                     "Could not find file.",
-                    "The file you entered does not exist. Double-Check the file path.");
-            messageWindow.addAction("Ok", MessageWindow::close);
+                    "The file you entered does not exist. Double-Check the file path."
+            );
+            messageWindow.addActionOk();
             MWUtils.showThemed(messageWindow);
             JeLib.console().warn("File couldn't be loaded.");
         }
@@ -342,32 +344,33 @@ public class LoadController extends VBox implements Initializable {
                 context.getRootStage(),
                 "Reverse Order",
                 "Shows loaded pairs in reverse order.\nYou can change this later."
-        ).addAction("OK", MessageWindow::close);
+        );
+        messageWindow.addActionOk();
         MWUtils.showThemed(messageWindow);
     }
 
     @FXML
     private void showManualPairAddingHints() {
-        MessageWindow messageWindow = new MessageWindow("Vocabulary Quiz - Hint",
+        MessageWindow messageWindow = new MessageWindow(
+                "Vocabulary Quiz - Hint",
                 context.getRootStage(),
                 "Add pair manually",
-                "Add a pair you typed above manually.\nType key=value and press the button.")
-                .addAction("OK", MessageWindow::close);
+                "Add a pair you typed above manually.\nType key=value and press the button."
+        );
+        messageWindow.addActionOk();
         MWUtils.showThemed(messageWindow);
     }
 
     @FXML
     private void showFileLoadingHints() {
-        MessageWindow messageWindow = new MessageWindow("Vocabulary Quiz - Hint",
+        MessageWindow messageWindow = new MessageWindow(
+                "Vocabulary Quiz - Hint",
                 context.getRootStage(),
                 "Load words from file",
-                "Loads words from a file.\nFormat of file:\nkey1=value1\nkey2=value2\n...\nYou can choose a file by clicking 'Browse'")
-                .setDimension(new Dimension2D(350, 300))
-                .addAction("OK", MessageWindow::close);
+                "Loads words from a file.\nFormat of file:\nkey1=value1\nkey2=value2\n...\nYou can choose a file by clicking 'Browse'"
+        );
+        messageWindow.setDimension(new Dimension2D(350, 300));
+        messageWindow.addActionOk();
         MWUtils.showThemed(messageWindow);
-
-        // TODO: Should be removed after library JeJavaFXUtils gets updated.
-        messageWindow.setWidth(350);
-        messageWindow.setHeight(300);
     }
 }
