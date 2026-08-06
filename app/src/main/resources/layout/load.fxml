@@ -8,6 +8,7 @@
 <VBox
     spacing="20"
     fx:controller="org.vocab.controller.LoadController"
+    onKeyPressed="#handleKeyPress"
     alignment="CENTER"
     fillWidth="false"
     xmlns:fx="http://javafx.com/fxml">

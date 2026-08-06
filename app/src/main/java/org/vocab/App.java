@@ -15,6 +15,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.CheckBox;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
+import org.vocab.debug.GuiConsole;
 import org.vocab.util.Utils;
 
 import java.io.IOException;
@@ -40,17 +41,12 @@ public class App extends Application implements Context {
 
     private final List<MessageReceiver> mMessageReceivers = new ArrayList<>();
     private Stage mStage;
+    private GuiConsole mConsoleStage = new GuiConsole();
 
     @Override
     public void start(Stage stage) {
         mStage = stage;
         Configuration.init("Vocabulary-Quiz");
-
-        // DISABLE LOGS FOR PRODUCTION
-        boolean enableConsole = true;
-        JeLib.console().setEnabled(enableConsole,
-                Console.Type.ERROR, Console.Type.WARNING,
-                Console.Type.INFO, Console.Type.EXCEPTION);
 
         registerReceiver(new Receiver());
 
@@ -138,6 +134,15 @@ public class App extends Application implements Context {
     }
 
     private final class Receiver implements MessageReceiver {
+        private boolean mEnableConsole = false;
+
+        public Receiver() {
+            // noinspection all : mEnableConsole is allways false; value can be changed.
+            JeLib.console().setEnabled(mEnableConsole,
+                    Console.Type.ERROR, Console.Type.WARNING,
+                    Console.Type.INFO, Console.Type.EXCEPTION);
+        }
+
         @Override
         public void onReceive(Message message) {
             if(message.getAction().equals("start_quiz")) {
@@ -148,6 +153,16 @@ public class App extends Application implements Context {
                 System.exit(0);
             } else if (message.getAction().equals("main")) {
                 setScene("load");
+            } else if (message.getAction().equals("switch_logs")) {
+                mEnableConsole = !mEnableConsole;
+                JeLib.console().setEnabled(mEnableConsole,
+                        Console.Type.ERROR, Console.Type.WARNING,
+                        Console.Type.INFO, Console.Type.EXCEPTION);
+                if(mEnableConsole) {
+                    mConsoleStage.showWindow();
+                } else {
+                    mConsoleStage.hideWindow();
+                }
             }
         }
 

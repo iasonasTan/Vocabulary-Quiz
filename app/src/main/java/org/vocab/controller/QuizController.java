@@ -20,7 +20,7 @@ import javafx.scene.layout.VBox;
 
 import org.vocab.App;
 import org.vocab.util.Utils;
-import org.vocab.visualizer.VisualizerWindow;
+import org.vocab.debug.PairsWindow;
 import org.vocab.vocab.AppStateIO;
 import org.vocab.vocab.PairAndAnswers;
 import org.vocab.vocab.Vocabulary;
@@ -46,12 +46,12 @@ public final class QuizController extends VBox implements Initializable {
     private PairAndAnswers pair;
     private Vocabulary vocabulary;
     private final Context context;
-    private final VisualizerWindow visualizerWindow;
+    private final PairsWindow pairsWindow;
 
     public QuizController(Context context) {
         this.context = context;
         this.context.registerReceiver(new VocabularyInitializer());
-        visualizerWindow = new VisualizerWindow(context);
+        pairsWindow = new PairsWindow(context);
     }
 
     @FXML
@@ -70,8 +70,13 @@ public final class QuizController extends VBox implements Initializable {
                 isAnswer(2);
                 break;
             case KeyCode.V:
-                visualizerWindow.swap();
+                pairsWindow.swap();
                 break;
+            case KeyCode.L:
+                Message message = Message.newBuilder()
+                        .setAction("switch_logs")
+                        .build();
+                context.broadcastMessage(message);
         }
     }
 

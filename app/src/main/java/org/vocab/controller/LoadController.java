@@ -19,6 +19,8 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
@@ -367,5 +369,17 @@ public class LoadController extends VBox implements Initializable {
         messageWindow.setDimension(new Dimension2D(350, 300));
         messageWindow.addActionOk();
         Utils.showThemed(messageWindow);
+    }
+
+    @FXML
+    public void handleKeyPress(KeyEvent ke) {
+        // noinspection all : other key events will be added
+        switch(ke.getCode()) {
+            case KeyCode.L:
+                Message message = Message.newBuilder()
+                        .setAction("switch_logs")
+                        .build();
+                context.broadcastMessage(message);
+        }
     }
 }

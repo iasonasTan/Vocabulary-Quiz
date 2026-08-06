@@ -1,0 +1,23 @@
+.console-panel {
+    -fx-background-color: #000000;
+}
+
+.console-text-area {
+    -fx-background-color: #000000;
+    -fx-text-fill: #ffffff;
+}
+
+.console-text-area .content {
+    -fx-background-color: #121212;
+    -fx-text-fill: #ffffff;
+    -fx-font-family: "Consolas", "Monospace";
+}
+
+.console-text-area .scroll-bar:vertical,
+    .dark-text-area .scroll-bar:horizontal {
+
+    -fx-background-color: #202020;
+}
+.console-text-area .scroll-bar .scroll-bar:horizontal .thumb {
+    -fx-background-color: #3e3e3e;
+}
