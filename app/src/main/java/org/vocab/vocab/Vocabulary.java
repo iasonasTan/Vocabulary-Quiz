@@ -5,7 +5,10 @@ import com.je.core.JeLib;
 import java.util.*;
 
 public final class Vocabulary {
-    private static final int MINIMUM_WORDS = 3;
+    private static final int MINIMUM_WORDS      = 3;
+    private static final String VALUE_SEPARATOR = " = ";
+    private static final String PAIRS_SEPARATOR = " \n ";
+    private static final String SCORE_SEPARATOR = " : ";
 
     private final List<Pair> mPairs = new ArrayList<>() {
         /**
@@ -30,21 +33,52 @@ public final class Vocabulary {
     public Vocabulary() {
     }
 
-    public Vocabulary(String data) throws ArrayIndexOutOfBoundsException {
-        loadString(data);
+    public Vocabulary(boolean configured, String data) throws ArrayIndexOutOfBoundsException {
+        if(configured)
+            loadStringConfigured(data);
+        else
+            loadStringUnconfigured(data);
     }
 
-    public void add(String unsplit) throws ArrayIndexOutOfBoundsException, NumberFormatException {
-        String[] split = unsplit.strip().split("[=:]");
-        add(split[0], split[1], Integer.parseInt(split[2]));
+    public void loadStringUnconfigured(String data) throws ArrayIndexOutOfBoundsException {
+        data.lines().forEach(unsplitPair -> {
+            if(!unsplitPair.contains(" = ")) {
+                return; // function is re-called by forEach. return does the same work as continue.
+            }
+            JeLib.console().log("Adding pair: "+unsplitPair);
+            addUnconfigured(unsplitPair);
+        });
     }
 
-    public void add(String key, String value) {
-        mPairs.add(new Pair(key.strip(), value.strip()));
+    public void loadStringConfigured(String data) throws ArrayIndexOutOfBoundsException {
+        data.lines().forEach(unsplitPair -> {
+            if(!unsplitPair.contains(" = ") || !unsplitPair.contains(" : ")) {
+                return; // function is re-called by forEach. return does the same work as continue.
+            }
+            JeLib.console().log("Adding pair: "+unsplitPair);
+            addConfigured(unsplitPair);
+        });
     }
 
-    public void add(String key, String value, int learned) {
-        mPairs.add(new Pair(key.strip(), value.strip(), learned));
+    public void addUnconfigured(String unsplit) throws ArrayIndexOutOfBoundsException {
+        String[] split = unsplit.strip().split(VALUE_SEPARATOR);
+        if(split.length == 2) {
+            var pair = new Pair(split[0], split[1]);
+            mPairs.add(pair);
+        } else {
+            JeLib.console().log("Didn't store pair: " + unsplit);
+        }
+    }
+
+    public void addConfigured(String unsplit) throws ArrayIndexOutOfBoundsException, NumberFormatException {
+        String separators = String.format("%s|%s", VALUE_SEPARATOR, SCORE_SEPARATOR);
+        String[] split = unsplit.strip().split(separators);
+        if(split.length == 3) {
+            var pair = new Pair(split[0], split[1], Integer.parseInt(split[2]));
+            mPairs.add(pair);
+        } else {
+            JeLib.console().log("Didn't store pair: " + unsplit);
+        }
     }
 
     /**
@@ -88,17 +122,6 @@ public final class Vocabulary {
         return Pair.sReverse;
     }
 
-    public void loadString(String data) throws ArrayIndexOutOfBoundsException {
-        String[] pairs = data.split(","); // Get pairs
-        for(String unsplitPair: pairs) {
-            if(!unsplitPair.contains("=") || !unsplitPair.contains(":")) {
-                continue;
-            }
-            JeLib.console().log("Adding pair: "+unsplitPair);
-            add(unsplitPair);
-        }
-    }
-
     /**
      * Holds a pair of words, and it's learned value.
      */
@@ -111,7 +134,7 @@ public final class Vocabulary {
         /**
          * If true, key and value will be reversed.
          */
-        public static boolean sReverse = false;
+        static boolean sReverse = false;
 
         /**
          * Indicates if the word is either learned or not learned.
@@ -166,7 +189,8 @@ public final class Vocabulary {
 
         @Override
         public String toString() {
-            return key+"="+value+":"+learned;
+            //     KEY                  VALUE                   LEARNED
+            return key + VALUE_SEPARATOR + value +SCORE_SEPARATOR+ learned;
         }
     }
 
@@ -184,7 +208,7 @@ public final class Vocabulary {
     public String toString() {
         final StringBuilder builder = new StringBuilder();
         // Append a pair and then a comma
-        mPairs.forEach(pair -> builder.append(pair.toString()).append(','));
+        mPairs.forEach(pair -> builder.append(pair.toString()).append(PAIRS_SEPARATOR));
         // Remove the last comma
         builder.setLength(Math.max(builder.length() - 1, 0));
         return builder.toString();

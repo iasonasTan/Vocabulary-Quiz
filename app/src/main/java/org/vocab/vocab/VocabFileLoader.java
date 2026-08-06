@@ -18,9 +18,8 @@ public final class VocabFileLoader {
         BufferedReader bufferedReader = new BufferedReader(reader);
         String line;
         while((line = bufferedReader.readLine()) != null) {
-            String[] lineSplit = line.split("=");
-            vocabulary.add(lineSplit[0], lineSplit[1]);
-            JeLib.console().log("Loading pair: " + lineSplit[0] + " === " + lineSplit[1]);
+            vocabulary.addUnconfigured(line);
+            JeLib.console().log("Loading pair: " + line);
         }
     }
 }

@@ -295,7 +295,7 @@ public class LoadController extends VBox implements Initializable {
     @FXML
     public void addWord() {
         try {
-            vocabulary.add(wordPairInput.getText());
+            vocabulary.addConfigured(wordPairInput.getText());
             wordPairInput.setText("");
         } catch (ArrayIndexOutOfBoundsException _) {
             // Just let 'em know

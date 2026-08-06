@@ -44,7 +44,7 @@ public final class AppStateIO {
             builder.setLength(Math.max(0, builder.length()-1));
 
             JeLib.console().log("Sending string to vocabulary instance: "+ builder);
-            vocabulary.loadString(builder.toString());
+            vocabulary.loadStringConfigured(builder.toString());
         }
     }
 }
