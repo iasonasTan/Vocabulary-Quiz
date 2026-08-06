@@ -163,6 +163,10 @@ public class App extends Application implements Context {
                 } else {
                     mConsoleStage.hideWindow();
                 }
+            } else if (message.getAction().equals("open_link")) {
+                getHostServices().showDocument(
+                        message.getBundle().getString("link")
+                );
             }
         }
 

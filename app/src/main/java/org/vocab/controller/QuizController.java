@@ -8,11 +8,13 @@ import com.jjfx.message.Message;
 import com.jjfx.receiver.MessageReceiver;
 import com.jjfx.utils.MessageWindow;
 
+import javafx.application.HostServices;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -189,5 +191,17 @@ public final class QuizController extends VBox implements Initializable {
                 nextQuestion();
             }
         }
+    }
+
+    @FXML
+    public void openContributorLink(ActionEvent actionEvent) {
+        Hyperlink hyperlink = (Hyperlink)actionEvent.getSource();
+        String username = hyperlink.getId();
+        Message openLink = Message.newBuilder()
+                .setAction("open_link")
+                .putExtra("link", "https://github.com/"+username)
+                .build();
+        context.broadcastMessage(openLink);
+        hyperlink.setVisited(false);
     }
 }

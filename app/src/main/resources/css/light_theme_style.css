@@ -4,6 +4,16 @@
     -fx-control-inner-background: #ffffff;
 }
 
+.subtext {
+    -fx-text-fill: #bbbbbb;
+    -fx-fill: #bbbbbb;
+}
+
+.sublink {
+    -fx-text-fill: #9baabe;
+    -fx-fill: #9baabe;
+}
+
 .root {
     -fx-base: #f0f0f0;
     -fx-background: #ffffff;

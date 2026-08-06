@@ -26,6 +26,15 @@
     -fx-text-fill: #AFB1B3;
 }
 
+.subtext {
+    -fx-text-fill: #747475;
+    -fx-fill: #747475;
+}
+
+.sublink {
+    -fx-text-fill: #5d5d73;
+    -fx-fill: #5d5d73;
+}
 
 /* Pane */
 .pane-grid{

@@ -1,74 +1,93 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.control.*?>
 
-<VBox
-    spacing="10"
+<BorderPane
     fx:controller="org.vocab.controller.QuizController"
     onKeyPressed="#handleKeyPress"
-    alignment="CENTER"
-    fillWidth="false"
     xmlns:fx="http://javafx.com/fxml">
 
-    <Label
-        styleClass="largeTitle"
-        text="Vocabulary Helper"/>
+    <center>
+        <VBox
+            spacing="10"
+            alignment="CENTER"
+            fillWidth="false">
 
-    <Label
-        styleClass="label"
-        fx:id="questionLabel"/>
+            <Label
+                styleClass="largeTitle"
+                text="Vocabulary Helper"/>
 
-    <HBox
-        spacing="10"
-        alignment="CENTER">
+            <Label
+                styleClass="label"
+                fx:id="questionLabel"/>
 
-        <Button
-            text="NULL"
-            styleClass="choice"
-            onAction="#choiceAction"
-            fx:id="choice1"/>
-        
-        <Button
-            text="NULL"
-            styleClass="choice"
-            onAction="#choiceAction"
-            fx:id="choice2"/>
+            <HBox
+                spacing="10"
+                alignment="CENTER">
 
-        <Button
-            text="NULL"
-            styleClass="choice"
-            onAction="#choiceAction"
-            fx:id="choice3"/>
-    </HBox>
+                <Button
+                    text="NULL"
+                    styleClass="choice"
+                    onAction="#choiceAction"
+                    fx:id="choice1"/>
 
-    <HBox
-        spacing="10">
+                <Button
+                    text="NULL"
+                    styleClass="choice"
+                    onAction="#choiceAction"
+                    fx:id="choice2"/>
 
-        <Button
-            styleClass="button"
-            text="Back"
-            onAction="#back"/>
+                <Button
+                    text="NULL"
+                    styleClass="choice"
+                    onAction="#choiceAction"
+                    fx:id="choice3"/>
+            </HBox>
 
-        <CheckBox
-            fx:id="reverseCheckbox"
-            text="Reverse"
-            styleClass="checkbox"
-            onAction="#reverseOrder" />
+            <HBox
+                spacing="10">
 
-        <HBox
-            spacing="5">
+                <Button
+                    styleClass="button"
+                    text="Back"
+                    onAction="#back"/>
 
-            <Button
-                text="Save"
-                styleClass="button"
-                onAction="#save" />
+                <CheckBox
+                    fx:id="reverseCheckbox"
+                    text="Reverse"
+                    styleClass="checkbox"
+                    onAction="#reverseOrder" />
 
-            <Button
-                text="?"
-                styleClass="hintButton"
-                onAction="#explainSave" />
-        </HBox>
-    </HBox>
+                <HBox
+                    spacing="5">
 
-</VBox>
+                    <Button
+                        text="Save"
+                        styleClass="button"
+                        onAction="#save" />
+
+                    <Button
+                        text="?"
+                        styleClass="hintButton"
+                        onAction="#explainSave" />
+                </HBox>
+            </HBox>
+        </VBox>
+    </center>
+
+    <bottom>
+        <VBox spacing="1" alignment="CENTER">
+            <HBox spacing="1" alignment="CENTER">
+                <Label styleClass="subtext" text="Developers: "/>
+                <Hyperlink styleClass="sublink" text="Jason Tan, " fx:id="iasonasTan" onAction="#openContributorLink" />
+                <Hyperlink styleClass="sublink" text="Aleš Laník, " fx:id="Krumca97" onAction="#openContributorLink" />
+                <Hyperlink styleClass="sublink" text="Mancy Kaur" fx:id="Mancykaur" onAction="#openContributorLink" />
+            </HBox>
+            <Label styleClass="subtext" text="Copyright© 2026 Jason Tan"/>
+            <Label styleClass="subtext" text="Licensed under GPL-v3"/>
+        </VBox>
+    </bottom>
+
+</BorderPane>
