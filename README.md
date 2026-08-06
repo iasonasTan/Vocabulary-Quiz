@@ -43,7 +43,7 @@ The JAR file is extra small but it requires:
 
 1. JeJFX.jar which you can download [here](https://github.com/iasonasTan/JeJavaFxUtils/releases/tag/v3.0.0).
 2. A JavaFX 25 SDK instance which you can download [here](https://www.oracle.com/java/technologies/downloads/javafx/#javafx25).
-6. JRE/JDK 25 or newer installed, you can downlad it [here](https://www.oracle.com/java/technologies/javase/jdk25-archive-downloads.html).
+6. JRE/JVM 25 or newer installed, you can downlad it [here](https://www.oracle.com/java/technologies/javase/jdk25-archive-downloads.html).
 
 And then you'll have to run the application by running a command like the below:
 ```bash
