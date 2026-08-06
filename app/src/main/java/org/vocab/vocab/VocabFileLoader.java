@@ -18,8 +18,8 @@ public final class VocabFileLoader {
         BufferedReader bufferedReader = new BufferedReader(reader);
         String line;
         while((line = bufferedReader.readLine()) != null) {
-            vocabulary.addUnconfigured(line);
             JeLib.console().log("Loading pair: " + line);
+            vocabulary.addUnconfigured(line);
         }
     }
 }

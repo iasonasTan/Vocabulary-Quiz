@@ -184,7 +184,7 @@ public final class QuizController extends VBox implements Initializable {
             if(message.getAction().equals("initialize_vocabulary")) {
                 JeLib.console().log("Loading vocabulary and path.");
                 pathToSaveState = message.getBundle().getString("savedState");
-                vocabulary = new Vocabulary(pathToSaveState != null, message.getBundle().getString("vocabulary"));
+                vocabulary = new Vocabulary(true, message.getBundle().getString("vocabulary"));
                 reverseCheckbox.setSelected(vocabulary.isReverse());
                 nextQuestion();
             }

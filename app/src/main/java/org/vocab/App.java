@@ -41,7 +41,7 @@ public class App extends Application implements Context {
 
     private final List<MessageReceiver> mMessageReceivers = new ArrayList<>();
     private Stage mStage;
-    private GuiConsole mConsoleStage = new GuiConsole();
+    private final GuiConsole mConsoleStage = new GuiConsole();
 
     @Override
     public void start(Stage stage) {

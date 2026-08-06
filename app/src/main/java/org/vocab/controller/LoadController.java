@@ -251,7 +251,14 @@ public class LoadController extends VBox implements Initializable {
             vfl.loadVocab(reader);
             filePathInput.setText("");
         } catch (IOException ioe) {
-            Utils.handleException(context, ioe);
+            MessageWindow messageWindow = new MessageWindow(
+                    "Error!",
+                    context.getRootStage(),
+                    "Could not load from given file.",
+                    "The file is either invalid or not accessible."
+            );
+            messageWindow.addActionOk();
+            Utils.showThemed(messageWindow);
         }
     }
 
@@ -297,7 +304,7 @@ public class LoadController extends VBox implements Initializable {
     @FXML
     public void addWord() {
         try {
-            vocabulary.addConfigured(wordPairInput.getText());
+            vocabulary.addUnconfigured(wordPairInput.getText());
             wordPairInput.setText("");
         } catch (ArrayIndexOutOfBoundsException _) {
             // Just let 'em know
@@ -380,6 +387,7 @@ public class LoadController extends VBox implements Initializable {
                         .setAction("switch_logs")
                         .build();
                 context.broadcastMessage(message);
+                break;
         }
     }
 }
