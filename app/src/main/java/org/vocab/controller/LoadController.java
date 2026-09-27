@@ -14,10 +14,7 @@ import javafx.fxml.Initializable;
 import javafx.geometry.Dimension2D;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -29,6 +26,7 @@ import javafx.stage.FileChooser;
 import org.vocab.App;
 import org.vocab.util.Utils;
 import org.vocab.vocab.AppStateIO;
+import org.vocab.vocab.PairAndAnswers;
 import org.vocab.vocab.VocabFileLoader;
 import org.vocab.vocab.Vocabulary;
 
@@ -50,6 +48,9 @@ public class LoadController extends VBox implements Initializable {
     public TextField wordPairInput, filePathInput;
 
     @FXML
+    public Label answersCountLabel;
+
+    @FXML
     private Button startQuizButton;
 
     @FXML
@@ -57,6 +58,9 @@ public class LoadController extends VBox implements Initializable {
 
     @FXML
     private Label titleLabel;
+
+    @FXML
+    private Slider answersCountSlider;
 
     @FXML
     private VBox loadButtons;
@@ -223,6 +227,7 @@ public class LoadController extends VBox implements Initializable {
             if(savedState != null) {
                 message.putExtra("savedState", savedState);
             }
+            PairAndAnswers.sAnswersCountManager.setAnswersCount((int)answersCountSlider.getValue());
             context.broadcastMessage(message);
         } else {
             startQuizButton.setDisable(true);
@@ -333,6 +338,9 @@ public class LoadController extends VBox implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         loadVersion();
         loadSavedStates();
+        answersCountSlider.valueProperty().addListener((_, _, newValue) ->
+                answersCountLabel.setText(String.valueOf(newValue.intValue())));
+        answersCountSlider.setValue(PairAndAnswers.sAnswersCountManager.getAnswersCount());
         reverseOrderCheckbox.setSelected(vocabulary.isReverse());
     }
 
@@ -389,5 +397,17 @@ public class LoadController extends VBox implements Initializable {
                 context.broadcastMessage(message);
                 break;
         }
+    }
+
+    @FXML
+    public void showAnswersCountSliderHint() {
+        MessageWindow messageWindow = new MessageWindow(
+                "Vocabulary Quiz - Hint",
+                context.getRootStage(),
+                "Answers count",
+                "Controls how many 'possibly correct answers'\nwill be show under the question."
+        );
+        messageWindow.addActionOk();
+        Utils.showThemed(messageWindow);
     }
 }

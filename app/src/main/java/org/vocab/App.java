@@ -36,6 +36,7 @@ public class App extends Application implements Context {
 
     public static final int STAGE_WIDTH  = 800, STAGE_HEIGHT = 600;
 
+    @SuppressWarnings("unused")
     static void main() {
         launch();
     }

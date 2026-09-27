@@ -2,8 +2,6 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.control.*?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.image.Image?>
 
 <VBox
     spacing="20"
@@ -41,6 +39,28 @@
                 text="?"
                 onAction="#showReverseOrderHint" />
         </HBox>
+    </HBox>
+
+    <HBox
+        spacing="20"
+        alignment="CENTER">
+
+        <Label
+            text="Answers count: " />
+
+        <Slider
+            min="2"
+            max="10"
+            fx:id="answersCountSlider"/>
+
+        <Label
+            text="NULL"
+            fx:id="answersCountLabel" />
+
+        <Button
+            styleClass="hintButton"
+            text="?"
+            onAction="#showAnswersCountSliderHint" />
     </HBox>
 
     <HBox
@@ -127,11 +147,11 @@
 
             <content>
                 <VBox
-                        minWidth="480"
-                        minHeight="300"
-                        fx:id="loadButtons"
-                        spacing="10"
-                        styleClass="je-container" />
+                    minWidth="480"
+                    minHeight="300"
+                    fx:id="loadButtons"
+                    spacing="10"
+                    styleClass="je-container" />
             </content>
         </ScrollPane>
     </VBox>

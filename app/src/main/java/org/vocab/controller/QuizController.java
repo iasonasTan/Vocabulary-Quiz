@@ -113,7 +113,7 @@ public final class QuizController extends VBox implements Initializable {
     private void applyPair(PairAndAnswers pair) {
         this.pair = pair;
         questionLabel.setText(pair.getQuestion());
-        for(int i=0; i<PairAndAnswers.sAnswersCountManager.getAnswersCount(); i++) {
+        for(int i=0; i<Math.min(PairAndAnswers.sAnswersCountManager.getAnswersCount(), answersLayout.getChildren().size()); i++) {
             if(answersLayout.getChildren().get(i) instanceof Button button) {
                 button.setText(pair.getAnswer(i) + "[" + (i+1) + "]");
             }
