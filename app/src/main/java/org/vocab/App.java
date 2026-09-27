@@ -17,6 +17,7 @@ import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import org.vocab.debug.GuiConsole;
 import org.vocab.util.Utils;
+import org.vocab.vocab.PairAndAnswers;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -47,6 +48,7 @@ public class App extends Application implements Context {
     public void start(Stage stage) {
         mStage = stage;
         Configuration.init("Vocabulary-Quiz");
+        PairAndAnswers.sAnswersCountManager.loadAnswersCount();
 
         registerReceiver(new Receiver());
 

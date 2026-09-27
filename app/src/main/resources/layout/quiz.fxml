@@ -24,26 +24,12 @@
                 fx:id="questionLabel"/>
 
             <HBox
+                fx:id="answersLayout"
                 spacing="10"
                 alignment="CENTER">
 
-                <Button
-                    text="NULL"
-                    styleClass="choice"
-                    onAction="#choiceAction"
-                    fx:id="choice1"/>
-
-                <Button
-                    text="NULL"
-                    styleClass="choice"
-                    onAction="#choiceAction"
-                    fx:id="choice2"/>
-
-                <Button
-                    text="NULL"
-                    styleClass="choice"
-                    onAction="#choiceAction"
-                    fx:id="choice3"/>
+                <!-- Components added via java. -->
+                <!-- org.vocab.controller.QuizController::initialize -->
             </HBox>
 
             <HBox

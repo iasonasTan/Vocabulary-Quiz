@@ -2,13 +2,10 @@ package org.vocab.controller;
 
 import com.je.core.JeLib;
 import com.je.io.configuration.Configuration;
-
 import com.jjfx.context.Context;
 import com.jjfx.message.Message;
 import com.jjfx.receiver.MessageReceiver;
 import com.jjfx.utils.MessageWindow;
-
-import javafx.application.HostServices;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -18,11 +15,11 @@ import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-
 import org.vocab.App;
-import org.vocab.util.Utils;
 import org.vocab.debug.PairsWindow;
+import org.vocab.util.Utils;
 import org.vocab.vocab.AppStateIO;
 import org.vocab.vocab.PairAndAnswers;
 import org.vocab.vocab.Vocabulary;
@@ -39,10 +36,10 @@ public final class QuizController extends VBox implements Initializable {
     public Label questionLabel;
 
     @FXML
-    public Button choice1, choice2, choice3;
+    public CheckBox reverseCheckbox;
 
     @FXML
-    public CheckBox reverseCheckbox;
+    public HBox answersLayout;
 
     private String pathToSaveState;
     private PairAndAnswers pair;
@@ -58,31 +55,29 @@ public final class QuizController extends VBox implements Initializable {
 
     @FXML
     public void handleKeyPress(KeyEvent ke) {
-        switch(ke.getCode()) {
-            case KeyCode.DIGIT1:
-            case KeyCode.NUMPAD1:
-                isAnswer(0);
-                break;
-            case KeyCode.DIGIT2:
-            case KeyCode.NUMPAD2:
-                isAnswer(1);
-                break;
-            case KeyCode.DIGIT3:
-            case KeyCode.NUMPAD3:
-                isAnswer(2);
-                break;
-            case KeyCode.V:
-                pairsWindow.swap();
-                break;
-            case KeyCode.L:
-                Message message = Message.newBuilder()
-                        .setAction("switch_logs")
-                        .build();
-                context.broadcastMessage(message);
+        final KeyCode[] codes = {null, KeyCode.DIGIT1, KeyCode.DIGIT2, KeyCode.DIGIT3, KeyCode.DIGIT4,
+                KeyCode.DIGIT5, KeyCode.DIGIT6, KeyCode.DIGIT7, KeyCode.DIGIT8, KeyCode.DIGIT9};
+        final KeyCode[] codesNumpad = {null, KeyCode.NUMPAD1, KeyCode.NUMPAD2, KeyCode.NUMPAD3, KeyCode.NUMPAD4,
+                KeyCode.NUMPAD5, KeyCode.NUMPAD6, KeyCode.NUMPAD7, KeyCode.NUMPAD8, KeyCode.NUMPAD9};
+        final KeyCode code = ke.getCode();
+        if(code.equals(KeyCode.L)) {
+            Message message = Message.newBuilder()
+                    .setAction("switch_logs")
+                    .build();
+            context.broadcastMessage(message);
+        } else if (code.equals(KeyCode.V)) {
+            pairsWindow.swap();
+        } else {
+            // Check if keycode is a number and if it is, check the answer
+            JeLib.console().log("Counting to " + Math.min(codes.length, PairAndAnswers.sAnswersCountManager.getAnswersCount()));
+            for(int i = 1; i<= Math.min(codes.length, PairAndAnswers.sAnswersCountManager.getAnswersCount()); i++) {
+                if(code.equals(codes[i]) || code.equals(codesNumpad[i])) {
+                    isAnswer(i-1);
+                }
+            }
         }
     }
 
-    @FXML
     public void choiceAction(ActionEvent event) {
         String buttonText = ((Button)event.getSource()).getText(); // Get text of the pressed button
         int startIndex = buttonText.lastIndexOf('[')+1; // Index of the letter before the number plus one
@@ -118,9 +113,11 @@ public final class QuizController extends VBox implements Initializable {
     private void applyPair(PairAndAnswers pair) {
         this.pair = pair;
         questionLabel.setText(pair.getQuestion());
-        choice1.setText(pair.getAnswer(0) + "[1]");
-        choice2.setText(pair.getAnswer(1) + "[2]");
-        choice3.setText(pair.getAnswer(2) + "[3]");
+        for(int i=0; i<PairAndAnswers.sAnswersCountManager.getAnswersCount(); i++) {
+            if(answersLayout.getChildren().get(i) instanceof Button button) {
+                button.setText(pair.getAnswer(i) + "[" + (i+1) + "]");
+            }
+        }
     }
 
     @FXML
@@ -140,6 +137,13 @@ public final class QuizController extends VBox implements Initializable {
      */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        int buttonsCount = PairAndAnswers.sAnswersCountManager.getAnswersCount();
+        for(int i=1; i<=buttonsCount; i++) {
+            Button button = new Button("NULL");
+            button.getStyleClass().add("choice");
+            button.setOnAction(this::choiceAction);
+            answersLayout.getChildren().add(button);
+        }
     }
 
     @FXML

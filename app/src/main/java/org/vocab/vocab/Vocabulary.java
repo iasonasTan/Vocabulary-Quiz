@@ -104,9 +104,12 @@ public final class Vocabulary {
         }
 
         Pair pair = randomPair();
-        Pair distractor1 = randomPair(), distractor2 = randomPair();
+        List<Pair> randomValues = new ArrayList<>();
+        randomValues.add(pair);
+        for(int i=0; i<PairAndAnswers.sAnswersCountManager.getAnswersCount()-1; i++) {
+            randomValues.add(randomPair());
+        }
 
-        List<Pair> randomValues = new ArrayList<>(List.of(pair, distractor1, distractor2)); // Put values in a shuffleable list.
         Collections.shuffle(randomValues); // Shuffle answers.
 
         // Return values packed in a PairAndAnswers record.
