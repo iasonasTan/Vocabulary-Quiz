@@ -1,6 +1,8 @@
 # Vocabulary Helper
 This app will help you memorize key-value pairs.
 
+_(I think that nowadays it is important to note that this is NOT a Vibe-Coded app and that no code is written by AI)_
+
 ## How to use the app
 
 **Home screen**:
