@@ -3,11 +3,16 @@ This app will help you memorize key-value pairs.
 
 _(I think that nowadays it is important to note that this is NOT a Vibe-Coded app and that no code is written by AI)_
 
+## How to run the app
+To run the app:
+
+1. Download `Vocabulary-Quiz-Linux.v3.zip` or `Vocabulary-Quiz-Windows.v3.zip` (based on your operating system).
+2. Extract the zip file.
+3. Double-click `run.sh` or `run.bat` (based on your OS, you'll find one file).
+
 ## How to use the app
 
 **Home screen**:
-
-First, launch the app (see above)
 
 When the app is launched, you'll see this screen:
 <img src="readme-res/app-load.png" height="500">
@@ -50,7 +55,7 @@ And, the best feature is that you can save the current quiz state and load it la
 Saving the quiz state is basically the best way to learn because it stores all the data
 and the algorithms that count what you learned and what you didn't.
 
-**WARNING: NO DATA IS BEING COLLECTED**
+**WARNING: NO DATA ARE BEING COLLECTED**
 
 ### Secret key events
 In the app, there are some secret key events, mostly referring to developers.
@@ -88,13 +93,6 @@ Just download a JavaFX zip for your OS and then execute:
 .\make-release.bat \path\to\jfx\instance\root # Windows
 ```
 The zip will be generated.
-
-## How to run the app
-To run the app:
-
-1. Download `Vocabulary-Quiz-Linux.v3.zip` or `Vocabulary-Quiz-Windows.v3.zip` (based on your operating system).
-2. Extract the zip file.
-3. Double-click `run.sh` or `run.bat` (based on your os, you'll find one file).
 
 ### For advanced users
 The release contains a JAR file.
